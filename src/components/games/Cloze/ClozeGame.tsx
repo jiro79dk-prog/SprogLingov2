@@ -6,6 +6,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { GameContent } from '../../../types';
+import { soundService } from '../../../services/soundService';
 
 interface GameProps {
   content: GameContent;
@@ -27,7 +28,10 @@ export const ClozeGame = ({ content, onCorrect, onWrong }: GameProps) => {
             key={opt}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => opt === content.answer ? onCorrect() : onWrong("Det ord passer ikke helt ind.")}
+            onClick={() => {
+              soundService.playClick();
+              opt === content.answer ? onCorrect() : onWrong("Det ord passer ikke helt ind.");
+            }}
             className="px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl font-black text-xl shadow-lg hover:shadow-orange-200 transition-all"
           >
             {opt}

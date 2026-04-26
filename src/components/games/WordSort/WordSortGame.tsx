@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GameContent } from '../../../types';
+import { soundService } from '../../../services/soundService';
 
 interface GameProps {
   content: GameContent;
@@ -32,6 +33,7 @@ export const WordSortGame = ({ content, onCorrect, onWrong }: GameProps) => {
 
   const handleSort = (category: string) => {
     if (!currentItem) return;
+    soundService.playClick();
 
     if (category === currentItem.category) {
       setFeedback('correct');

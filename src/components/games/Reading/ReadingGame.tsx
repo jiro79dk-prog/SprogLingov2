@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { Mic } from 'lucide-react';
 import { motion } from 'motion/react';
 import { GameContent, Language } from '../../../types';
+import { soundService } from '../../../services/soundService';
 
 interface GameProps {
   content: GameContent;
@@ -20,6 +21,7 @@ export const ReadingGame = ({ content, language, onCorrect, onWrong }: GameProps
   const [, setTranscript] = useState('');
 
   const startListening = () => {
+    soundService.playClick();
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert("Hov! Din browser understøtter ikke stemmegenkendelse.");

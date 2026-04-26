@@ -6,6 +6,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { GameContent } from '../../../types';
+import { soundService } from '../../../services/soundService';
 
 interface GameProps {
   content: GameContent;
@@ -25,7 +26,10 @@ export const GrammarGame = ({ content, onCorrect, onWrong }: GameProps) => {
             key={opt}
             whileHover={{ scale: 1.05, y: -4 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => opt === content.answer ? onCorrect() : onWrong("Husk reglerne!")}
+            onClick={() => {
+              soundService.playClick();
+              opt === content.answer ? onCorrect() : onWrong("Husk reglerne!");
+            }}
             className="px-10 py-5 bg-white/60 border-2 border-white rounded-3xl font-black text-2xl text-slate-600 shadow-sm hover:border-indigo-300 transition-all"
           >
             {opt}

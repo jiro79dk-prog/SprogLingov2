@@ -6,54 +6,71 @@
 import { GameContent, Grade } from '../../../../types';
 
 export const ENGELSK_MEMORY_P1: Partial<Record<Grade, GameContent[]>> = {
-  0: Array.from({ length: 50 }, (_, i) => ({
-    id: `en0-me-p1-${i}`,
-    type: 'Memory',
-    question: 'Basic Vocabulary',
-    instruction: 'Match the pairs',
-    answer: '',
-    context: i % 2 === 0 
-      ? 'Sun:Sun|Moon:Moon|Star:Star|Cloud:Cloud|Rain:Rain|Wind:Wind'
-      : 'Red:Red|Blue:Blue|Green:Green|Yellow:Yellow|Black:Black|White:White'
-  })),
-  1: Array.from({ length: 50 }, (_, i) => ({
-    id: `en1-me-p1-${i}`,
-    type: 'Memory',
-    question: 'Numbers and Colors',
-    instruction: 'Match the pairs',
-    answer: '',
-    context: i % 2 === 0
-      ? 'One:1|Two:2|Three:3|Four:4|Five:5|Six:6'
-      : 'Apple:Apple|Pear:Pear|Grape:Grape|Big:Big|Small:Small|Cat:Cat'
-  })),
-  2: Array.from({ length: 50 }, (_, i) => ({
-    id: `en2-me-p1-${i}`,
-    type: 'Memory',
-    question: 'Animals and Actions',
-    instruction: 'Match the pairs',
-    answer: '',
-    context: i % 2 === 0
-      ? 'Jump:Jump|Run:Run|Swim:Swim|Talk:Talk|Walk:Walk|Sing:Sing'
-      : 'Lion:Lion|Tiger:Tiger|Bear:Bear|Wolf:Wolf|Fox:Fox|Deer:Deer'
-  })),
-  3: Array.from({ length: 50 }, (_, i) => ({
-    id: `en3-me-p1-${i}`,
-    type: 'Memory',
-    question: 'Body and School',
-    instruction: 'Match the pairs',
-    answer: '',
-    context: i % 2 === 0
-      ? 'Head:Head|Hand:Hand|Foot:Foot|Arm:Arm|Leg:Leg|Eye:Eye'
-      : 'Book:Book|Pen:Pen|Desk:Desk|Chair:Chair|Map:Map|Bell:Bell'
-  })),
-  4: Array.from({ length: 50 }, (_, i) => ({
-    id: `en4-me-p1-${i}`,
-    type: 'Memory',
-    question: 'Family and House',
-    instruction: 'Match the pairs',
-    answer: '',
-    context: i % 2 === 0
-      ? 'Mother:Mother|Father:Father|Sister:Sister|Brother:Brother|Baby:Baby|Home:Home'
-      : 'Door:Door|Window:Window|Roof:Roof|Wall:Wall|Floor:Floor|Room:Room'
-  }))
+  0: [
+    { id: 'en0-me1', type: 'Memory', question: 'Numbers (1-6)', instruction: 'Match numeral to word', answer: '', context: '1:One|2:Two|3:Three|4:Four|5:Five|6:Six' },
+    { id: 'en0-me2', type: 'Memory', question: 'Colors', instruction: 'Match the colors', answer: '', context: 'Red:Red|Blue:Blue|Yellow:Yellow|Green:Green|Orange:Orange|Purple:Purple' },
+    { id: 'en0-me3', type: 'Memory', question: 'Family', instruction: 'Match family members', answer: '', context: 'Mother:Mother|Father:Father|Sister:Sister|Brother:Brother|Baby:Baby|Grandma:Grandma' },
+    { id: 'en0-me4', type: 'Memory', question: 'Animals', instruction: 'Match the animals', answer: '', context: 'Cat:Cat|Dog:Dog|Bird:Bird|Fish:Fish|Mouse:Mouse|Rabbit:Rabbit' },
+    { id: 'en0-me5', type: 'Memory', question: 'Body Parts', instruction: 'Match body parts', answer: '', context: 'Head:Head|Hands:Hands|Feet:Feet|Eyes:Eyes|Nose:Nose|Mouth:Mouth' },
+    { id: 'en0-me6', type: 'Memory', question: 'School Objects', instruction: 'Match objects', answer: '', context: 'Book:Book|Pencil:Pencil|Bag:Bag|Chair:Chair|Table:Table|Paper:Paper' },
+    { id: 'en0-me7', type: 'Memory', question: 'Actions', instruction: 'Match actions', answer: '', context: 'Jump:Jump|Run:Run|Sing:Sing|Dance:Dance|Sit:Sit|Stand:Stand' },
+    { id: 'en0-me8', type: 'Memory', question: 'Fruits', instruction: 'Match fruits', answer: '', context: 'Apple:Apple|Banana:Banana|Orange:Orange|Pear:Pear|Grape:Grape|Strawberry:Strawberry' },
+    { id: 'en0-me9', type: 'Memory', question: 'Nature', instruction: 'Match nature words', answer: '', context: 'Sun:Sun|Moon:Moon|Star:Star|Tree:Tree|Flower:Flower|Grass:Grass' },
+    { id: 'en0-me10', type: 'Memory', question: 'Toys', instruction: 'Match toys', answer: '', context: 'Ball:Ball|Doll:Doll|Car:Car|Train:Train|Block:Block|Teddy:Teddy' },
+    { id: 'en0-me11', type: 'Memory', question: 'Animal Sounds', instruction: 'Match animal to sound', answer: '', context: 'Dog:Woof|Cat:Meow|Cow:Moo|Duck:Quack|Sheep:Baa|Lion:Roar' },
+    { id: 'en0-me12', type: 'Memory', question: 'Simple Rhymes 1', instruction: 'Match rhyming words', answer: '', context: 'Cat:Hat|Dog:Log|Pig:Wig|Bat:Mat|Fox:Box|Hen:Pen' },
+    { id: 'en0-me13', type: 'Memory', question: 'Simple Rhymes 2', instruction: 'Match rhyming words', answer: '', context: 'Sun:Fun|Bee:Tree|Star:Car|Fly:Sky|Moon:Spoon|Bed:Red' },
+    { id: 'en0-me14', type: 'Memory', question: 'Listen & Do', instruction: 'Match command', answer: '', context: 'Listen:Listen|Repeat:Repeat|Jump:Jump|Sit:Sit|Look:Look|Stop:Stop' },
+    { id: 'en0-me15', type: 'Memory', question: 'Household Items', instruction: 'Match items', answer: '', context: 'Bed:Bed|Cup:Cup|Spoon:Spoon|Key:Key|TV:TV|Phone:Phone' },
+    { id: 'en0-me16', type: 'Memory', question: 'Weather (Simple)', instruction: 'Match weather', answer: '', context: 'Sun:Sun|Rain:Rain|Snow:Snow|Wind:Wind|Cloud:Cloud|Hot:Hot' },
+    { id: 'en0-me17', type: 'Memory', question: 'Feelings (Simple)', instruction: 'Match feelings', answer: '', context: 'Happy:Happy|Sad:Sad|Angry:Angry|Sleepy:Sleepy|Funny:Funny|Nice:Nice' },
+    { id: 'en0-me18', type: 'Memory', question: 'Food (Simple)', instruction: 'Match foods', answer: '', context: 'Milk:Milk|Water:Water|Bread:Bread|Egg:Egg|Cake:Cake|Rice:Rice' },
+    { id: 'en0-me19', type: 'Memory', question: 'More Animals', instruction: 'Match animals', answer: '', context: 'Lion:Lion|Elephant:Elephant|Monkey:Monkey|Zebra:Zebra|Giraffe:Giraffe|Snake:Snake' },
+    { id: 'en0-me20', type: 'Memory', question: 'My Room', instruction: 'Match items', answer: '', context: 'Bed:Bed|Desk:Desk|Lamp:Lamp|Toy:Toy|Book:Book|Poster:Poster' },
+    { id: 'en0-me21', type: 'Memory', question: 'Body Sounds', instruction: 'Match action to sound', answer: '', context: 'Clap:Hands|Stomp:Feet|Snap:Fingers|Whistle:Mouth|Hum:Throat|Sneeze:Nose' },
+    { id: 'en0-me22', type: 'Memory', question: 'Daily Routine (Short)', instruction: 'Match actions', answer: '', context: 'Wake:Sleep|Eat:Food|Play:Toys|Go:School|Wash:Water|Brush:Teeth' },
+    { id: 'en0-me23', type: 'Memory', question: 'Colors & Fruit', instruction: 'Match color to fruit', answer: '', context: 'Red:Apple|Yellow:Banana|Orange:Orange|Green:Pear|Purple:Grape|Pink:Strawberry' },
+    { id: 'en0-me24', type: 'Memory', question: 'Big & Small', instruction: 'Match opposites', answer: '', context: 'Big:Small|Tall:Short|Fast:Slow|Hot:Cold|Up:Down|In:Out' },
+    { id: 'en0-me25', type: 'Memory', question: 'Garden things', instruction: 'Match words', answer: '', context: 'Bird:Bird|Bee:Bee|Grass:Grass|Flower:Flower|Tree:Tree|Ant:Ant' },
+  ],
+  1: [
+    { id: 'en1-me1', type: 'Memory', question: 'Numbers (7-12)', instruction: 'Match numeral to word', answer: '', context: '7:Seven|8:Eight|9:Nine|10:Ten|11:Eleven|12:Twelve' },
+    { id: 'en1-me2', type: 'Memory', question: 'Colors (Shades)', instruction: 'Match colors', answer: '', context: 'Pink:Pink|Brown:Brown|Grey:Grey|Black:Black|White:White|Light blue:Light blue' },
+    { id: 'en1-me3', type: 'Memory', question: 'Farm Animals', instruction: 'Match farm animals', answer: '', context: 'Cow:Cow|Pig:Pig|Horse:Horse|Sheep:Sheep|Chicken:Chicken|Duck:Duck' },
+    { id: 'en1-me4', type: 'Memory', question: 'Food', instruction: 'Match food items', answer: '', context: 'Bread:Bread|Cheese:Cheese|Milk:Milk|Egg:Egg|Cake:Cake|Ice cream:Ice cream' },
+    { id: 'en1-me5', type: 'Memory', question: 'The House', instruction: 'Match house words', answer: '', context: 'Door:Door|Window:Window|Roof:Roof|Wall:Wall|Floor:Floor|Garden:Garden' },
+    { id: 'en1-me6', type: 'Memory', question: 'Feelings', instruction: 'Match feelings', answer: '', context: 'Happy:Happy|Sad:Sad|Angry:Angry|Tired:Tired|Hungry:Hungry|Thirsty:Thirsty' },
+    { id: 'en1-me7', type: 'Memory', question: 'Vehicles', instruction: 'Match vehicles', answer: '', context: 'Bus:Bus|Bike:Bike|Plane:Plane|Boat:Boat|Truck:Truck|Helicopter:Helicopter' },
+    { id: 'en1-me8', type: 'Memory', question: 'Weather', instruction: 'Match weather', answer: '', context: 'Rain:Rain|Snow:Snow|Wind:Wind|Cloud:Cloud|Storm:Storm|Rainbow:Rainbow' },
+    { id: 'en1-me9', type: 'Memory', question: 'Clothes', instruction: 'Match clothes', answer: '', context: 'Hat:Hat|T-shirt:T-shirt|Shoes:Shoes|Socks:Socks|Pants:Pants|Coat:Coat' },
+    { id: 'en1-me10', type: 'Memory', question: 'Opposites', instruction: 'Match opposites', answer: '', context: 'Big:Small|Hot:Cold|Up:Down|In:Out|Fast:Slow|Long:Short' },
+    { id: 'en1-me11', type: 'Memory', question: 'Numbers (13-18)', instruction: 'Match numeral to word', answer: '', context: '13:Thirteen|14:Fourteen|15:Fifteen|16:Sixteen|17:Seventeen|18:Eighteen' },
+    { id: 'en1-me12', type: 'Memory', question: 'School Supplies', instruction: 'Match objects', answer: '', context: 'Ruler:Lineal|Eraser:Viskelæder|Glue:Lim|Scissors:Saks|Notebook:Notesbog|Pen:Pen' },
+    { id: 'en1-me13', type: 'Memory', question: 'Daily Routine', instruction: 'Match actions', answer: '', context: 'Get up:Stå op|Wash face:Vaske ansigt|Brush teeth:Børste tænder|Get dressed:Tag tøj på|Go to school:Gå i skole|Study:Studere' },
+    { id: 'en1-me14', type: 'Memory', question: 'Pets', instruction: 'Match pets', answer: '', context: 'Hamster:Hamster|Guinea pig:Marsvin|Parrot:Papegøje|Goldfish:Guldfisk|Turtle:Skildpadde|Pony:Pony' },
+    { id: 'en1-me15', type: 'Memory', question: 'In the Town', instruction: 'Match places', answer: '', context: 'Shop:Butik|Park:Park|School:Skole|Hospital:Hospital|Bank:Bank|Street:Gade' },
+    { id: 'en1-me16', type: 'Memory', question: 'Grammar: to be (I/You)', instruction: 'Match the phrases', answer: '', context: 'I am:Jeg er|You are:Du er|I am happy:Jeg er glad|You are tall:Du er høj|Am I?:Er jeg?|Are you?:Er du?' },
+    { id: 'en1-me17', type: 'Memory', question: 'Grammar: it is', instruction: 'Match the phrases', answer: '', context: 'It is a dog:Det er en hund|It is a cat:Det er en kat|It is red:Det er rød|It is blue:Det er blå|What is it?:Hvad er det?|It is...:Det er...' },
+    { id: 'en1-me18', type: 'Memory', question: 'Grammar: can/can\'t', instruction: 'Match the phrases', answer: '', context: 'I can jump:Jeg kan hoppe|I can\'t fly:Jeg kan ikke flyve|Can you?:Kan du?|Yes, I can:Ja, jeg kan|No, I can\'t:Nej, jeg kan ikke|He can run:Han kan løbe' },
+    { id: 'en1-me19', type: 'Memory', question: 'Body Parts 2', instruction: 'Match body parts', answer: '', context: 'Ears:Ører|Hair:Hår|Neck:Hals|Shoulders:Skuldre|Arms:Arme|Legs:Ben' },
+    { id: 'en1-me20', type: 'Memory', question: 'Food & Drink Mix', instruction: 'Match items', answer: '', context: 'Juice:Juice|Apple:Æble|Bread:Brød|Water:Vand|Milk:Mælk|Banana:Banan' },
+    { id: 'en1-me21', type: 'Memory', question: 'Wild Animals', instruction: 'Match animals', answer: '', context: 'Lion:Løve|Tiger:Tiger|Elephant:Elefant|Giraffe:Giraf|Monkey:Abe|Zebra:Zebra' },
+    { id: 'en1-me22', type: 'Memory', question: 'At Sea', instruction: 'Match words', answer: '', context: 'Ship:Skib|Boat:Båd|Water:Vand|Fish:Fisk|Island:Ø|Beach:Strand' },
+    { id: 'en1-me23', type: 'Memory', question: 'Time of Day', instruction: 'Match words', answer: '', context: 'Morning:Morgen|Noon:Middag|Afternoon:Eftermiddag|Evening:Aften|Night:Nat|Day:Dag' },
+    { id: 'en1-me24', type: 'Memory', question: 'Activity Mix', instruction: 'Match actions', answer: '', context: 'Write:Skrive|Read:Læse|Draw:Tegne|Paint:Male|Cook:Lave mad|Bake:Bage' },
+    { id: 'en1-me25', type: 'Memory', question: 'Nature Mix', instruction: 'Match words', answer: '', context: 'Mountain:Bjerg|Lake:Sø|River:Flod|Forest:Skov|Field:Mark|Path:Sti' },
+  ],
+  2: [
+    { id: 'en2-me1', type: 'Memory', question: 'Numbers (11-20)', instruction: 'Match numeral to word', answer: '', context: '11:Eleven|12:Twelve|13:Thirteen|14:Fourteen|15:Fifteen|20:Twenty' },
+    { id: 'en2-me2', type: 'Memory', question: 'Body Parts', instruction: 'Match body parts', answer: '', context: 'Shoulder:Skulder|Elbow:Albue|Knee:Knæ|Ankle:Ankel|Head:Hoved|Back:Ryg' },
+    { id: 'en2-me3', type: 'Memory', question: 'Family', instruction: 'Match relations', answer: '', context: 'Aunt:Tante|Uncle:Onkel|Cousin:Fætter/Kusine|Grandmother:Bedstemor|Grandfather:Bedstefar|Family:Familie' },
+    { id: 'en2-me4', type: 'Memory', question: 'Breakfast', instruction: 'Match breakfast foods', answer: '', context: 'Cereal:Morgenmadsprodukt|Toast:Ristet brød|Jam:Syltetøj|Milk:Mælk|Honey:Honning|Butter:Smør' },
+    { id: 'en2-me5', type: 'Memory', question: 'Holidays', instruction: 'Match holiday words', answer: '', context: 'Easter:Påske|Christmas:Jul|Halloween:Halloween|Santa:Julemand|Tree:Træ|Egg:Æg' },
+    { id: 'en2-me6', type: 'Memory', question: 'Daily Actions', instruction: 'Match actions', answer: '', context: 'Wake up:Vågne op|Wash:Vaske|Eat:Spise|Go:Gå|Play:Lege|Sleep:Sove' },
+    { id: 'en2-me7', type: 'Memory', question: 'Clothes', instruction: 'Match clothes', answer: '', context: 'Shirt:Skjorte|Hat:Hat|Shoes:Sko|Socks:Strømper|Pants:Bukser|Coat:Frakke' },
+    { id: 'en2-me8', type: 'Memory', question: 'Colors', instruction: 'Match colors', answer: '', context: 'Pink:Lyserød|Brown:Brun|Grey:Grå|Black:Sort|White:Hvid|Orange:Orange' },
+    { id: 'en2-me9', type: 'Memory', question: 'Pets', instruction: 'Match pets', answer: '', context: 'Dog:Hund|Cat:Kat|Hamster:Hamster|Rabbit:Kanin|Bird:Fugl|Fish:Fisk' },
+    { id: 'en2-me10', type: 'Memory', question: 'Questions', instruction: 'Match questions', answer: '', context: 'Who:Hvem|What:Hvad|Where:Hvor|How:Hvordan|Why:Hvorfor|When:Hvornår' },
+  ]
 };
+

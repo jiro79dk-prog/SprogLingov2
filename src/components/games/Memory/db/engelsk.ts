@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { GameContent, Grade } from '../../../../types';
 import { ENGELSK_MEMORY_P1 } from './engelsk_part1';
-import { ENGELSK_MEMORY_DATA_P2 as ENGELSK_MEMORY_P2 } from './engelsk_part2';
+import { ENGELSK_MEMORY_P2 } from './engelsk_part2';
 import { ENGELSK_MEMORY_P3 } from './engelsk_part3';
 import { ENGELSK_MEMORY_P4 } from './engelsk_part4';
 

@@ -7,6 +7,7 @@ import React from 'react';
 import { Volume2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { GameContent, Language } from '../../../types';
+import { soundService } from '../../../services/soundService';
 
 interface GameProps {
   content: GameContent;
@@ -18,7 +19,12 @@ interface GameProps {
 export const AudioGame = ({ content, language, onCorrect, onWrong }: GameProps) => {
   const speak = () => {
     const utterance = new SpeechSynthesisUtterance(content.question);
-    utterance.lang = language === 'Dansk' ? 'da-DK' : language === 'Engelsk' ? 'en-US' : language === 'Tysk' ? 'de-DE' : 'fr-FR';
+    utterance.lang = 
+      language === 'Dansk' ? 'da-DK' : 
+      language === 'Engelsk' ? 'en-US' : 
+      language === 'Tysk' ? 'de-DE' : 
+      language === 'Spansk' ? 'es-ES' : 
+      'fr-FR';
     window.speechSynthesis.speak(utterance);
   };
 
@@ -37,7 +43,10 @@ export const AudioGame = ({ content, language, onCorrect, onWrong }: GameProps) 
         {content.options?.map((opt) => (
           <button
             key={opt}
-            onClick={() => opt === content.answer ? onCorrect() : onWrong("Lyt grundigt igen!")}
+            onClick={() => {
+              soundService.playClick();
+              opt === content.answer ? onCorrect() : onWrong("Lyt grundigt igen!");
+            }}
             className="p-8 bg-white/40 border-2 border-white rounded-[2rem] shadow-sm text-2xl font-black text-slate-600 backdrop-blur-sm hover:bg-white/80 transition-all"
           >
             {opt}

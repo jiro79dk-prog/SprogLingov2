@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GameContent } from '../../../types';
+import { soundService } from '../../../services/soundService';
 
 interface GameProps {
   content: GameContent;
@@ -26,6 +27,7 @@ export const LetterOrderGame = ({ content, onCorrect, onWrong }: GameProps) => {
   }, [content.answer]);
 
   const handleLetterClick = (letter: string, index: number) => {
+    soundService.playClick();
     const nextGuess = currentGuess + letter;
     
     // Check if progress is correct so far
@@ -46,6 +48,7 @@ export const LetterOrderGame = ({ content, onCorrect, onWrong }: GameProps) => {
   };
 
   const handleReset = () => {
+    soundService.playClick();
     setAvailableLetters(content.answer.split('').sort(() => Math.random() - 0.5));
     setCurrentGuess('');
   };

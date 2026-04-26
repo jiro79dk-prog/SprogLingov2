@@ -166,6 +166,7 @@ export const ENGELSK_CLOZE_P2: Partial<Record<Grade, GameContent[]>> = {
     { id: 'en7-c51', type: 'Cloze', question: 'Reading gives ___ into the world.', answer: 'insight', options: ['insight', 'ignorance', 'shoes'], instruction: 'Message' },
   ],
   8: [
+    { id: 'en8-c1', type: 'Cloze', question: 'Society must ___ to the new technology.', answer: 'adapt', options: ['adapt', 'remove', 'stop'], instruction: 'Society' },
     { id: 'en8-c2', type: 'Cloze', question: 'Identity is a ___ topic in modern literature.', answer: 'central', options: ['central', 'unknown', 'blue'], instruction: 'Theme' },
     { id: 'en8-c3', type: 'Cloze', question: 'Who am I? This is an ___ question.', answer: 'existential', options: ['existential', 'stupid', 'easy'], instruction: 'Theme' },
     { id: 'en8-c4', type: 'Cloze', question: 'Globalization makes the world ___ for us.', answer: 'smaller', options: ['smaller', 'larger', 'blue'], instruction: 'Society' },

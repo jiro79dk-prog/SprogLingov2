@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GameContent } from '../../../types';
+import { soundService } from '../../../services/soundService';
 
 interface MemoryCard {
   id: string;
@@ -60,6 +61,7 @@ export const MemoryGame: React.FC<MemoryGameProps> = ({ content, onComplete }) =
   const handleFlip = (index: number) => {
     if (flippedIndices.length === 2 || cards[index].isFlipped || cards[index].isMatched) return;
 
+    soundService.playFlip();
     const newCards = [...cards];
     newCards[index].isFlipped = true;
     setCards(newCards);

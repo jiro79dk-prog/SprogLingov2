@@ -7,6 +7,8 @@ import { GameContent, Grade } from '../../../../types';
 
 export const DANSK_CLOZE_P2: Partial<Record<Grade, GameContent[]>> = {
   5: [
+    { id: 'da5-c1', type: 'Cloze', question: 'Vandet ___ ved 100 grader celsius.', answer: 'koger', options: ['koger', 'fryser', 'smelter'], instruction: 'Videnskab' },
+    { id: 'da5-c2', type: 'Cloze', question: 'Oxygen er en ___ vi indånder.', answer: 'gas', options: ['gas', 'væske', 'sten'], instruction: 'Videnskab' },
     { id: 'da5-c3', type: 'Cloze', question: 'Astronauten ___ vægtløs i rummet.', answer: 'svæver', options: ['svæver', 'løber', 'falder'], instruction: 'Videnskab' },
     { id: 'da5-c4', type: 'Cloze', question: 'Vulkanen ___ og spyede lava.', answer: 'eruptede', options: ['eruptede', 'sov', 'sang'], instruction: 'Natur' },
     { id: 'da5-c5', type: 'Cloze', question: 'Jorden ___ omkring solen.', answer: 'roterer', options: ['roterer', 'står', 'hænger'], instruction: 'Videnskab' },
@@ -164,6 +166,7 @@ export const DANSK_CLOZE_P2: Partial<Record<Grade, GameContent[]>> = {
     { id: 'da7-c51', type: 'Cloze', question: 'Læsning giver ___ til verden.', answer: 'indsigt', options: ['indsigt', 'udsigtsløshed', 'sko'], instruction: 'Besked' },
   ],
   8: [
+    { id: 'da8-c1', type: 'Cloze', question: 'Samfundet skal ___ sig til teknologien.', answer: 'tilpasse', options: ['tilpasse', 'fjerne', 'stoppe'], instruction: 'Samfund' },
     { id: 'da8-c2', type: 'Cloze', question: 'Identitet er et ___ emne i moderne litteratur.', answer: 'centralt', options: ['centralt', 'ukendt', 'blåt'], instruction: 'Tema' },
     { id: 'da8-c3', type: 'Cloze', question: 'Hvem er jeg? Det er et ___ spørgsmål.', answer: 'eksistentielt', options: ['eksistentielt', 'dumt', 'nemt'], instruction: 'Tema' },
     { id: 'da8-c4', type: 'Cloze', question: 'Globalisering gør verden ___ for os.', answer: 'mindre', options: ['mindre', 'større', 'blå'], instruction: 'Samfund' },

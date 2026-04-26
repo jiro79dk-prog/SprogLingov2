@@ -4,48 +4,28 @@
  */
 
 import { GameContent, Grade } from '../../../../types';
+import { DANSK_WORDSORT_P1 } from './dansk_part1';
+import { DANSK_WORDSORT_P2 } from './dansk_part2';
+import { DANSK_WORDSORT_P3 } from './dansk_part3';
+import { DANSK_WORDSORT_P4 } from './dansk_part4';
 
-export const DANSK_WORDSORT: Partial<Record<Grade, GameContent[]>> = {
-  2: [
-    {
-      id: 'da2-ws1',
-      type: 'WordSort',
-      instruction: 'Sorter ordene i Navneord og Udsagnsord',
-      question: 'Navneord vs Udsagnsord',
-      answer: '',
-      options: ['Navneord', 'Udsagnsord'],
-      context: 'hund:Navneord|løber:Udsagnsord|bord:Navneord|spiser:Udsagnsord|kat:Navneord|sover:Udsagnsord'
-    },
-    {
-      id: 'da2-ws2',
-      type: 'WordSort',
-      instruction: 'Vokaler eller Konsonanter?',
-      question: 'Vokaler vs Konsonanter',
-      answer: '',
-      options: ['Vokal', 'Konsonant'],
-      context: 'a:Vokal|b:Konsonant|e:Vokal|s:Konsonant|i:Vokal|t:Konsonant|o:Vokal|u:Vokal|k:Konsonant'
-    }
-  ],
-  3: [
-    {
-      id: 'da3-ws1',
-      type: 'WordSort',
-      instruction: 'Sorter ordene i Navneord, Udsagnsord og Tillægsord',
-      question: 'Ordklasser',
-      answer: '',
-      options: ['Navneord', 'Udsagnsord', 'Tillægsord'],
-      context: 'bil:Navneord|hvisker:Udsagnsord|grøn:Tillægsord|pige:Navneord|hopper:Udsagnsord|hurtig:Tillægsord|skole:Navneord|tænker:Udsagnsord|sød:Tillægsord'
-    }
-  ],
-  4: [
-    {
-      id: 'da4-ws1',
-      type: 'WordSort',
-      instruction: 'Sorter efter køn',
-      question: 'En eller Et?',
-      answer: '',
-      options: ['En', 'Et'],
-      context: 'bil:En|hus:Et|kat:En|æble:Et|stol:En|bord:Et|mand:En|barn:Et'
-    }
-  ]
+const mergeGameContent = (
+  ...parts: Partial<Record<Grade, GameContent[]>>[]
+): Partial<Record<Grade, GameContent[]>> => {
+  const result: Partial<Record<Grade, GameContent[]>> = {};
+  parts.forEach((part) => {
+    Object.keys(part).forEach((grade) => {
+      const g = parseInt(grade) as unknown as Grade;
+      if (!result[g]) result[g] = [];
+      result[g] = [...result[g]!, ...part[g]!];
+    });
+  });
+  return result;
 };
+
+export const DANSK_WORDSORT: Partial<Record<Grade, GameContent[]>> = mergeGameContent(
+  DANSK_WORDSORT_P1,
+  DANSK_WORDSORT_P2,
+  DANSK_WORDSORT_P3,
+  DANSK_WORDSORT_P4
+);

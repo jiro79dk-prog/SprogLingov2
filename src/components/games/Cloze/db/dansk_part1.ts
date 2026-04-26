@@ -113,6 +113,8 @@ export const DANSK_CLOZE_P1: Partial<Record<Grade, GameContent[]>> = {
     { id: 'da1-c51', type: 'Cloze', question: 'Tak ___ hjælpen.', answer: 'for', options: ['for', 'med', 'til'], instruction: 'Forholdsord' },
   ],
   2: [
+    { id: 'da2-c1', type: 'Cloze', question: 'Jeg ___ en bog nu.', answer: 'læser', options: ['læser', 'læste', 'vil læse'], instruction: 'Nutid' },
+    { id: 'da2-c2', type: 'Cloze', question: 'Katten ___ mælk hver dag.', answer: 'drikker', options: ['drikker', 'drak', 'drukket'], instruction: 'Nutid' },
     { id: 'da2-c3', type: 'Cloze', question: 'Pigen ___ sin mor med opvasken.', answer: 'hjalp', options: ['hjalp', 'hjælper', 'vil hjælpe'], instruction: 'Datid' },
     { id: 'da2-c4', type: 'Cloze', question: 'I går ___ vi en stor kage.', answer: 'bagte', options: ['bagte', 'bager', 'vil bage'], instruction: 'Datid' },
     { id: 'da2-c5', type: 'Cloze', question: 'Min bror ___ meget hurtigt.', answer: 'løber', options: ['løber', 'løb', 'har løbet'], instruction: 'Nutid' },

@@ -6,6 +6,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { GameContent } from '../../../types';
+import { soundService } from '../../../services/soundService';
 
 interface GameProps {
   content: GameContent;
@@ -15,6 +16,7 @@ interface GameProps {
 
 export const MatchGame = ({ content, onCorrect, onWrong }: GameProps) => {
   const handleChoice = (option: string) => {
+    soundService.playClick();
     if (option === content.answer) {
       onCorrect();
     } else {

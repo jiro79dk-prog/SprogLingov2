@@ -9,6 +9,7 @@ import { Languages, Trophy, Zap } from 'lucide-react';
 import { Language, Grade, GameContent, GameType } from './types';
 import { LANGUAGE_THEMES } from './constants';
 import { generateGameContent } from './services/contentService';
+import { soundService } from './services/soundService';
 import { Lobby } from './components/Lobby';
 import { GameContainer } from './components/GameContainer';
 import { SparkleEffect } from './components/Effects';
@@ -25,7 +26,7 @@ export default function App() {
   const [isChallengeMode, setIsChallengeMode] = useState(false);
   const [scores, setScores] = useState<Record<Language, number>>(() => {
     const saved = localStorage.getItem('sproglingo_scores');
-    return saved ? JSON.parse(saved) : { 'Dansk': 0, 'Engelsk': 0, 'Tysk': 0, 'Fransk': 0 };
+    return saved ? JSON.parse(saved) : { 'Dansk': 0, 'Engelsk': 0, 'Tysk': 0, 'Fransk': 0, 'Spansk': 0 };
   });
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('sproglingo_font');
@@ -66,6 +67,12 @@ export default function App() {
     setScores(prev => ({ ...prev, [currentLanguage]: prev[currentLanguage] + points }));
     setFeedback({ message: `Flot! + ${points} point!`, type: 'success' });
     
+    if (currentIndex < contents.length - 1) {
+      soundService.playCorrect();
+    } else {
+      soundService.playComplete();
+    }
+    
     setTimeout(() => {
       if (currentIndex < contents.length - 1) {
         setCurrentIndex(v => v + 1);
@@ -76,6 +83,12 @@ export default function App() {
       }
     }, 1500);
   }, [currentIndex, contents, currentLanguage, isChallengeMode]);
+
+  const handleWrong = useCallback((hint: string) => {
+    soundService.playWrong();
+    setFeedback({ message: hint, type: 'error' });
+    setTimeout(() => setFeedback(null), 3000);
+  }, []);
 
   return (
     <div className="min-h-screen font-sans bg-gradient-to-br from-[#E0F2FE] via-[#F5F3FF] to-[#ECFDF5] p-6 transition-all" style={{ fontSize: `${fontSize}%` }}>
@@ -115,7 +128,17 @@ export default function App() {
                 setSelectedGameType={setSelectedGameType}
               />
             )}
-            {gameState === 'playing' && <GameContainer contents={contents} currentIndex={currentIndex} currentLanguage={currentLanguage} onCorrect={handleCorrect} onWrong={(h) => { setFeedback({ message: h, type: 'error' }); setTimeout(() => setFeedback(null), 3000); }} onExit={() => setGameState('lobby')} feedback={feedback} />}
+            {gameState === 'playing' && (
+              <GameContainer 
+                contents={contents} 
+                currentIndex={currentIndex} 
+                currentLanguage={currentLanguage} 
+                onCorrect={handleCorrect} 
+                onWrong={handleWrong} 
+                onExit={() => setGameState('lobby')} 
+                feedback={feedback} 
+              />
+            )}
             {gameState === 'loading' && <div className="glass-card p-32 text-center space-y-4"><div className="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" /><h2 className="text-xl font-bold">Gør klar...</h2></div>}
           </AnimatePresence>
         </main>
