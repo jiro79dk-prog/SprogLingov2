@@ -39,6 +39,13 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('sproglingo_dark') === 'true');
   const [isAdmin, setIsAdmin] = useState(false);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('admin') === 'true') {
+      setIsAdmin(true);
+    }
+  }, []);
+
   useEffect(() => { localStorage.setItem('sproglingo_dyslexic', isDyslexicMode.toString()); }, [isDyslexicMode]);
   useEffect(() => { localStorage.setItem('sproglingo_dark', isDarkMode.toString()); }, [isDarkMode]);
   useEffect(() => { localStorage.setItem('sproglingo_grade', currentGrade.toString()); }, [currentGrade]);

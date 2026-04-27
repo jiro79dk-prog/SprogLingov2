@@ -21,7 +21,8 @@ import {
   Layers,
   SortAsc,
   Brain,
-  X
+  X,
+  Lock
 } from 'lucide-react';
 import { LANGUAGES, GRADES, GRADE_LABELS, GAME_LABELS, GAME_TYPES } from '../constants';
 import { Language, Grade, GameType } from '../types';
@@ -332,7 +333,21 @@ export const Lobby = ({
         </div>
       </div>
 
-        {showSettings && (
+      <div className="flex justify-center">
+        <button 
+          onClick={onAdminClick}
+          className={`group flex items-center gap-2 py-4 px-8 text-[10px] font-black uppercase tracking-widest transition-all rounded-2xl border ${
+            isDarkMode 
+              ? 'text-slate-500 border-slate-800 hover:text-indigo-400 hover:border-indigo-900/30 bg-slate-900/40' 
+              : 'text-indigo-300 border-indigo-50 hover:text-indigo-600 hover:bg-white/40'
+          }`}
+        >
+          <Lock size={12} className="transition-transform group-hover:scale-110" />
+          Admin Portal
+        </button>
+      </div>
+
+      {showSettings && (
           <motion.div 
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
@@ -381,15 +396,6 @@ export const Lobby = ({
                     {GRADES.map(g => <option key={g} value={g}>{GRADE_LABELS[g]}</option>)}
                   </select>
                 </div>
-              </div>
-              
-              <div className="pt-4 border-t border-indigo-50">
-                <button 
-                  onClick={onAdminClick}
-                  className="w-full py-2 text-[10px] font-black text-indigo-300 uppercase tracking-widest hover:text-indigo-500 transition-colors"
-                >
-                  Admin Access
-                </button>
               </div>
             </div>
           </motion.div>
