@@ -13,7 +13,7 @@ import { WORDSORT_DATA } from "../components/games/WordSort/data.ts";
 import { LETTERORDER_DATA } from "../components/games/LetterOrder/data.ts";
 import { MEMORY_DATA } from "../components/games/Memory/data.ts";
 
-const ALL_DATA: Record<GameType, any> = {
+export const ALL_DATA: Record<GameType, any> = {
   'Match': MATCH_DATA,
   'Audio': AUDIO_DATA,
   'Grammar': GRAMMAR_DATA,

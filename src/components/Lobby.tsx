@@ -30,15 +30,15 @@ import { getAvailableGameTypes } from '../services/contentService';
 const AVATARS = ['🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐙', '🦖', '🦄', '🐝', '🦋', '🐢', '🐍', '🐘', '🦒', '🦓', '🦩'];
 
 const GAME_ICONS: Record<string, React.ReactNode> = {
-  'Random': <Zap size={24} className="text-yellow-500" />,
-  'Grammar': <BookOpen size={24} className="text-indigo-500" />,
-  'Match': <Link2 size={24} className="text-pink-500" />,
-  'Audio': <Volume2 size={24} className="text-blue-500" />,
-  'Reading': <Eye size={24} className="text-emerald-500" />,
-  'Cloze': <Edit3 size={24} className="text-orange-500" />,
-  'WordSort': <Layers size={24} className="text-purple-500" />,
-  'LetterOrder': <SortAsc size={24} className="text-cyan-500" />,
-  'Memory': <Brain size={24} className="text-rose-500" />
+  'Random': <Zap size={24} className="text-yellow-500 fill-yellow-200/50" />,
+  'Grammar': <BookOpen size={24} className="text-indigo-500 fill-indigo-200/50" />,
+  'Match': <Link2 size={24} className="text-pink-500 stroke-[2.5]" />,
+  'Audio': <Volume2 size={24} className="text-blue-500 fill-blue-200/50" />,
+  'Reading': <Eye size={24} className="text-emerald-500 fill-emerald-200/50" />,
+  'Cloze': <Edit3 size={24} className="text-orange-500 fill-orange-200/50" />,
+  'WordSort': <Layers size={24} className="text-purple-500 fill-purple-200/50" />,
+  'LetterOrder': <SortAsc size={24} className="text-cyan-500 stroke-[2.5]" />,
+  'Memory': <Brain size={24} className="text-rose-500 fill-rose-200/50" />
 };
 
 interface LobbyProps {
@@ -59,6 +59,7 @@ interface LobbyProps {
   selectedGameType: GameType | 'Random';
   setSelectedGameType: (t: GameType | 'Random') => void;
   isDarkMode: boolean;
+  onAdminClick: () => void;
 }
 
 export const Lobby = ({
@@ -78,7 +79,8 @@ export const Lobby = ({
   setIsOnboarded,
   selectedGameType,
   setSelectedGameType,
-  isDarkMode
+  isDarkMode,
+  onAdminClick
 }: LobbyProps) => {
   const [showSettings, setShowSettings] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -187,61 +189,71 @@ export const Lobby = ({
     const [localGrade, setLocalGrade] = useState<Grade>(currentGrade);
 
     return (
-      <div className={`flex flex-col md:flex-row items-center gap-4 p-3 md:p-4 rounded-3xl border transition-all group shadow-sm ${
-        isDarkMode ? 'bg-slate-800/40 border-slate-700/60 hover:bg-slate-800/60' : 'bg-white/40 border-white/60 hover:bg-white/80'
+      <div className={`flex flex-col md:flex-row items-center gap-4 p-3 md:p-5 rounded-[2rem] border transition-all group shadow-sm ${
+        isDarkMode ? 'bg-slate-800/40 border-slate-700/60 hover:bg-slate-800/60' : 'bg-white/60 border-white hover:bg-white'
       }`}>
-        <div className="flex items-center gap-4 flex-1 min-w-0">
-          <div className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center transition-all ${
+        <div className="flex items-center gap-4 flex-1 min-w-0 w-full">
+          <div className={`w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center transition-all ${
             selectedGameType === type 
-              ? 'bg-indigo-600 shadow-md ring-4 ring-indigo-50/10' 
-              : isDarkMode ? 'bg-slate-700 shadow-sm' : 'bg-white shadow-sm'
+              ? 'bg-indigo-600 shadow-lg shadow-indigo-100 ring-4 ring-indigo-50/10' 
+              : isDarkMode ? 'bg-slate-700 shadow-sm border border-slate-600' : 'bg-indigo-50 shadow-sm border border-indigo-100'
           }`}>
-            {GAME_ICONS[type] || icon}
+            {selectedGameType === type ? React.cloneElement(GAME_ICONS[type] as React.ReactElement, { className: 'text-white' }) : GAME_ICONS[type] || icon}
           </div>
-          <div className="min-w-0">
-            <h3 className={`font-black truncate ${isDarkMode ? 'text-slate-100' : 'text-indigo-900'}`}>{label}</h3>
-            <p className="text-[10px] text-indigo-400 font-black uppercase tracking-wider">{description}</p>
+          <div className="min-w-0 flex-1">
+            <h3 className={`font-black text-lg truncate ${isDarkMode ? 'text-slate-100' : 'text-indigo-900'}`}>{label}</h3>
+            <p className={`text-[10px] font-black uppercase tracking-wider ${isDarkMode ? 'text-slate-400' : 'text-indigo-400'}`}>{description}</p>
           </div>
         </div>
         
-        <div className={`flex items-center gap-2 p-1 rounded-2xl shrink-0 ${isDarkMode ? 'bg-slate-900/50' : 'bg-black/5'}`}>
-          <div className="flex flex-col items-center">
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                setLocalGrade(prev => Math.min(10, prev + 1) as Grade);
-              }}
-              className="p-1 hover:text-indigo-600 text-indigo-300 transition-colors"
-            >
-              <ChevronLeft size={16} className="rotate-90" />
-            </button>
-            <div className={`w-8 h-6 rounded-lg flex items-center justify-center text-[10px] font-black shadow-sm border ${
-              isDarkMode ? 'bg-slate-700 text-indigo-400 border-slate-600' : 'bg-white text-indigo-600 border-indigo-50'
-            }`}>
-              {localGrade}
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <div className={`flex items-center gap-3 p-1 px-3 rounded-2xl shrink-0 h-14 border ${
+            isDarkMode ? 'bg-slate-900/50 border-slate-700' : 'bg-indigo-50/50 border-indigo-100'
+          }`}>
+            <span className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-slate-500' : 'text-indigo-300'}`}>KLASSE</span>
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLocalGrade(prev => Math.max(0, prev - 1) as Grade);
+                }}
+                className={`w-8 h-8 flex items-center justify-center rounded-xl transition-all ${
+                  isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-slate-300' : 'bg-white hover:bg-indigo-100 text-indigo-600 shadow-sm'
+                }`}
+              >
+                <ChevronLeft size={18} />
+              </button>
+              
+              <div className="w-6 text-center">
+                <span className={`text-lg font-black ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                  {localGrade === 0 ? 'BH' : localGrade}
+                </span>
+              </div>
+
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLocalGrade(prev => Math.min(10, prev + 1) as Grade);
+                }}
+                className={`w-8 h-8 flex items-center justify-center rounded-xl transition-all ${
+                  isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-slate-300' : 'bg-white hover:bg-indigo-100 text-indigo-600 shadow-sm'
+                }`}
+              >
+                <ChevronRight size={18} />
+              </button>
             </div>
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                setLocalGrade(prev => Math.max(0, prev - 1) as Grade);
-              }}
-              className="p-1 hover:text-indigo-600 text-indigo-300 transition-colors"
-            >
-              <ChevronLeft size={16} className="-rotate-90" />
-            </button>
           </div>
-          <div className="text-[7px] font-black text-indigo-400 uppercase tracking-tighter vertical-text pr-1">Klasse</div>
+    
+          <button
+            onClick={() => {
+              onStart(type, localGrade);
+            }}
+            className="flex-1 md:flex-none md:w-32 h-14 bg-indigo-600 text-white rounded-2xl font-black text-sm shadow-xl shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-2 group-hover:bg-indigo-500"
+          >
+            <span>SPIL</span>
+            <Play size={16} fill="currentColor" />
+          </button>
         </div>
-  
-        <button
-          onClick={() => {
-            onStart(type, localGrade);
-          }}
-          className="w-full md:w-auto px-6 py-4 bg-indigo-600 text-white rounded-2xl font-black text-xs shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0 group-hover:px-8"
-        >
-          <span>SPIL</span>
-          <Play size={14} fill="currentColor" />
-        </button>
       </div>
     );
   };
@@ -369,6 +381,15 @@ export const Lobby = ({
                     {GRADES.map(g => <option key={g} value={g}>{GRADE_LABELS[g]}</option>)}
                   </select>
                 </div>
+              </div>
+              
+              <div className="pt-4 border-t border-indigo-50">
+                <button 
+                  onClick={onAdminClick}
+                  className="w-full py-2 text-[10px] font-black text-indigo-300 uppercase tracking-widest hover:text-indigo-500 transition-colors"
+                >
+                  Admin Access
+                </button>
               </div>
             </div>
           </motion.div>

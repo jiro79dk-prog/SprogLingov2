@@ -8,6 +8,7 @@ import { ENGELSK_MEMORY_P1 } from './engelsk_part1';
 import { ENGELSK_MEMORY_P2 } from './engelsk_part2';
 import { ENGELSK_MEMORY_P3 } from './engelsk_part3';
 import { ENGELSK_MEMORY_P4 } from './engelsk_part4';
+import { ENGELSK_MEMORY_P5 } from './engelsk_part5';
 
 const mergeGameContent = (
   ...parts: Partial<Record<Grade, GameContent[]>>[]
@@ -27,5 +28,6 @@ export const ENGELSK_MEMORY: Partial<Record<Grade, GameContent[]>> = mergeGameCo
   ENGELSK_MEMORY_P1,
   ENGELSK_MEMORY_P2,
   ENGELSK_MEMORY_P3,
-  ENGELSK_MEMORY_P4
+  ENGELSK_MEMORY_P4,
+  ENGELSK_MEMORY_P5
 );

@@ -11,16 +11,21 @@ body {
 }
 
 .dyslexic-mode {
-  font-family: var(--font-dyslexic) !important;
-  letter-spacing: 0.05em;
-  word-spacing: 0.1em;
+  --font-sans: 'OpenDyslexic', 'Lexend', sans-serif !important;
+  font-family: var(--font-sans) !important;
   line-height: 1.5 !important;
+  letter-spacing: 0.05ch !important;
+  word-spacing: 0.1ch !important;
 }
 
 .dyslexic-mode * {
   font-family: inherit !important;
   text-align: left !important;
   font-size: max(16px, 1em) !important;
+}
+
+.dyslexic-mode:not(.dark-mode) {
+  background-color: #FDF5E6 !important;
 }
 
 .dark-mode {

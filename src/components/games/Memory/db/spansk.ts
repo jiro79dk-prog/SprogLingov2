@@ -14,6 +14,7 @@ import { SPANSK_MEMORY_P7 } from './spansk_part7';
 import { SPANSK_MEMORY_P8 } from './spansk_part8';
 import { SPANSK_MEMORY_P9 } from './spansk_part9';
 import { SPANSK_MEMORY_P10 } from './spansk_part10';
+import { SPANSK_MEMORY_P11 } from './spansk_part11';
 
 export const SPANSK_MEMORY: Partial<Record<Grade, GameContent[]>> = {
   ...SPANSK_MEMORY_P1,
@@ -26,4 +27,5 @@ export const SPANSK_MEMORY: Partial<Record<Grade, GameContent[]>> = {
   ...SPANSK_MEMORY_P8,
   ...SPANSK_MEMORY_P9,
   ...SPANSK_MEMORY_P10,
+  ...SPANSK_MEMORY_P11,
 };

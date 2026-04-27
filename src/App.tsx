@@ -7,12 +7,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { Languages, Trophy, Zap, Settings, Moon, Sun } from 'lucide-react';
 import { Language, Grade, GameContent, GameType } from './types';
-import { LANGUAGE_THEMES } from './constants';
+import { LANGUAGE_THEMES, GRADE_LABELS } from './constants';
 import { generateGameContent } from './services/contentService';
 import { soundService } from './services/soundService';
 import { Lobby } from './components/Lobby';
 import { GameContainer } from './components/GameContainer';
 import { SparkleEffect } from './components/Effects';
+import { AdminDashboard } from './components/AdminDashboard';
 
 export default function App() {
   const [userName, setUserName] = useState(() => localStorage.getItem('sproglingo_user') || '');
@@ -36,6 +37,7 @@ export default function App() {
 
   const [isDyslexicMode, setIsDyslexicMode] = useState(() => localStorage.getItem('sproglingo_dyslexic') === 'true');
   const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('sproglingo_dark') === 'true');
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => { localStorage.setItem('sproglingo_dyslexic', isDyslexicMode.toString()); }, [isDyslexicMode]);
   useEffect(() => { localStorage.setItem('sproglingo_dark', isDarkMode.toString()); }, [isDarkMode]);
@@ -114,7 +116,7 @@ export default function App() {
               <div className="flex items-center gap-1.5">
                 <p className={`text-[8px] font-bold uppercase tracking-tighter ${isDarkMode ? 'text-slate-400' : 'text-indigo-400'}`}>Bolvig Solutions</p>
                 <div className={`w-[2px] h-[2px] rounded-full ${isDarkMode ? 'bg-slate-700' : 'bg-indigo-200'}`} />
-                <p className={`text-[8px] font-black uppercase tracking-tighter ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{currentGrade}. Klasse</p>
+                <p className={`text-[8px] font-black uppercase tracking-tighter ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{GRADE_LABELS[currentGrade]}</p>
               </div>
             </div>
           </div>
@@ -190,7 +192,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto relative z-10">
           <main>
           <AnimatePresence mode="wait">
-            {gameState === 'lobby' && (
+            {gameState === 'lobby' && !isAdmin && (
               <Lobby 
                 scores={scores} 
                 currentGrade={currentGrade} 
@@ -209,6 +211,13 @@ export default function App() {
                 selectedGameType={selectedGameType}
                 setSelectedGameType={setSelectedGameType}
                 isDarkMode={isDarkMode}
+                onAdminClick={() => setIsAdmin(true)}
+              />
+            )}
+            {isAdmin && (
+              <AdminDashboard 
+                isDarkMode={isDarkMode}
+                onExit={() => setIsAdmin(false)}
               />
             )}
             {gameState === 'playing' && (
