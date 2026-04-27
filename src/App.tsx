@@ -46,7 +46,7 @@ export default function App() {
 
   const startLevel = async () => {
     setGameState('loading');
-    const gradeToUse = isChallengeMode ? Math.min(currentGrade + 1, 9) as Grade : currentGrade;
+    const gradeToUse = isChallengeMode ? Math.min(currentGrade + 1, 10) as Grade : currentGrade;
     const types: GameType[] = ['Match', 'Audio', 'Reading', 'Grammar', 'Cloze', 'WordSort', 'LetterOrder', 'Memory'];
     const typeToUse = selectedGameType === 'Random' ? types[Math.floor(Math.random() * types.length)] : selectedGameType;
     const newItems = await generateGameContent(currentLanguage, gradeToUse, typeToUse);

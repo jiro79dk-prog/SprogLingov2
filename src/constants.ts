@@ -7,7 +7,7 @@ import { Language, Grade } from './types.ts';
 
 export const LANGUAGES: Language[] = ['Dansk', 'Engelsk', 'Tysk', 'Fransk', 'Spansk'];
 
-export const GRADES: Grade[] = [0, 1, 2, 3, 4, 5, 6, 7, 8,  9];
+export const GRADES: Grade[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export const LANGUAGE_THEMES: Record<Language, { bg: string; accent: string; text: string }> = {
   'Dansk': { bg: 'bg-red-500', accent: 'text-red-600', text: 'text-white' },
@@ -28,6 +28,7 @@ export const GRADE_LABELS: Record<Grade, string> = {
   7: '7. klasse',
   8: '8. klasse',
   9: '9. klasse',
+  10: '10. klasse',
 };
 
 export const GAME_TYPES = ['Match', 'Audio', 'Reading', 'Grammar', 'Cloze', 'WordSort', 'LetterOrder', 'Memory'] as const;

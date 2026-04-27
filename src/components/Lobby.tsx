@@ -94,7 +94,7 @@ export const Lobby = ({
                   <span className="text-2xl font-black text-indigo-600 block">{GRADE_LABELS[currentGrade]}</span>
                 </div>
                 <button 
-                  onClick={() => setCurrentGrade(prev => Math.min(9, prev + 1) as Grade)}
+                  onClick={() => setCurrentGrade(prev => Math.min(10, prev + 1) as Grade)}
                   className="w-12 h-12 flex items-center justify-center bg-white rounded-xl shadow-sm text-indigo-600 hover:scale-110 active:scale-95 transition-all"
                 >
                   <ChevronRight size={24} />
@@ -183,7 +183,7 @@ export const Lobby = ({
         >
           <div className="relative z-10">
             <p className="text-[10px] font-bold uppercase tracking-wider opacity-80">
-              Niveau: {GRADE_LABELS[Math.min(currentGrade + 1, 9) as Grade]}
+              Niveau: {GRADE_LABELS[Math.min(currentGrade + 1, 10) as Grade]}
             </p>
             <h3 className="text-2xl font-black">Udfordre mig!</h3>
             <p className="text-xs mt-1 font-medium italic">Optjen 1,5x flere point nu</p>
