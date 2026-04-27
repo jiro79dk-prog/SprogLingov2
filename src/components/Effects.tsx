@@ -48,7 +48,7 @@ export const FeedbackBox = ({ message, type }: FeedbackProps) => {
     <motion.div
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className={`p-4 border-l-4 rounded-r-lg shadow-sm mb-4 ${colors[type]}`}
+      className={`p-4 border-l-4 rounded-r-lg shadow-sm ${colors[type]}`}
     >
       <p className="font-medium">{message}</p>
     </motion.div>

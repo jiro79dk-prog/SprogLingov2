@@ -40,6 +40,21 @@ export const GameContainer = ({
 }: GameContainerProps) => {
   const currentItem = contents[currentIndex];
 
+  const formatQuestion = (text: string) => {
+    if (!text) return text;
+    return text
+      .replace(/\$\\dots\$/g, '___')
+      .replace(/\$\(\\dots\)\$/g, '___')
+      .replace(/\$\(dots\)\$/g, '___')
+      .replace(/\(dots\)/g, '___')
+      .replace(/\.\.\./g, '___');
+  };
+
+  const formattedItem = {
+    ...currentItem,
+    question: formatQuestion(currentItem.question)
+  };
+
   return (
     <motion.div
       key="playing"
@@ -60,9 +75,9 @@ export const GameContainer = ({
       <div className="flex justify-between items-center mb-10 pt-4">
         <div>
           <span className="text-indigo-400 font-black text-xs tracking-[0.2em] uppercase">
-            {currentItem.type} • {currentLanguage}
+            {formattedItem.type} • {currentLanguage}
           </span>
-          <h2 className="text-2xl font-black">{currentItem.type}</h2>
+          <h2 className="text-2xl font-black">{formattedItem.type}</h2>
         </div>
         <div className="flex items-center gap-6">
           <span className={`text-xs font-black uppercase tracking-widest px-3 py-1 rounded-lg border ${
@@ -76,32 +91,38 @@ export const GameContainer = ({
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center">
-        <AnimatePresence mode="wait">
-          {feedback && <FeedbackBox message={feedback.message} type={feedback.type} />}
-        </AnimatePresence>
-
-        <div className="py-8">
+      <div className="flex-1 flex flex-col min-h-0">
+        <div className="flex-1 flex flex-col justify-center py-8">
           <p className="text-xs font-black text-indigo-300 uppercase tracking-[0.3em] mb-4 text-center">
-            {currentItem.instruction}
+            {formattedItem.instruction}
           </p>
           
-          <div className="max-w-3xl mx-auto">
-            {currentItem.type === 'Match' && <MatchGame content={currentItem} onCorrect={onCorrect} onWrong={onWrong} />}
-            {currentItem.type === 'Audio' && <AudioGame content={currentItem} language={currentLanguage} onCorrect={onCorrect} onWrong={onWrong} />}
-            {currentItem.type === 'Reading' && <ReadingGame content={currentItem} language={currentLanguage} onCorrect={onCorrect} onWrong={onWrong} />}
-            {currentItem.type === 'Grammar' && <GrammarGame content={currentItem} onCorrect={onCorrect} onWrong={onWrong} />}
-            {currentItem.type === 'Cloze' && <ClozeGame content={currentItem} onCorrect={onCorrect} onWrong={onWrong} />}
-            {currentItem.type === 'WordSort' && <WordSortGame content={currentItem} onCorrect={onCorrect} onWrong={onWrong} />}
-            {currentItem.type === 'LetterOrder' && <LetterOrderGame content={currentItem} onCorrect={onCorrect} onWrong={onWrong} />}
-            {currentItem.type === 'Memory' && (
+          <div className="max-w-3xl mx-auto w-full">
+            {formattedItem.type === 'Match' && <MatchGame content={formattedItem} onCorrect={onCorrect} onWrong={onWrong} />}
+            {formattedItem.type === 'Audio' && <AudioGame content={formattedItem} language={currentLanguage} onCorrect={onCorrect} onWrong={onWrong} />}
+            {formattedItem.type === 'Reading' && <ReadingGame content={formattedItem} language={currentLanguage} onCorrect={onCorrect} onWrong={onWrong} />}
+            {formattedItem.type === 'Grammar' && <GrammarGame content={formattedItem} onCorrect={onCorrect} onWrong={onWrong} />}
+            {formattedItem.type === 'Cloze' && <ClozeGame content={formattedItem} onCorrect={onCorrect} onWrong={onWrong} />}
+            {formattedItem.type === 'WordSort' && <WordSortGame content={formattedItem} onCorrect={onCorrect} onWrong={onWrong} />}
+            {formattedItem.type === 'LetterOrder' && <LetterOrderGame content={formattedItem} onCorrect={onCorrect} onWrong={onWrong} />}
+            {formattedItem.type === 'Memory' && (
               <MemoryGame 
-                content={currentItem} 
+                content={formattedItem} 
                 onComplete={(isCorrect) => (isCorrect ? onCorrect() : onWrong('Prøv igen!'))} 
               />
             )}
           </div>
         </div>
+
+        <div className="h-24 flex items-center justify-center shrink-0">
+          <AnimatePresence mode="wait">
+            {feedback && <FeedbackBox message={feedback.message} type={feedback.type} />}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <div className="absolute bottom-4 left-8 opacity-20 text-[10px] font-mono pointer-events-none">
+        # {formattedItem.id}
       </div>
     </motion.div>
   );

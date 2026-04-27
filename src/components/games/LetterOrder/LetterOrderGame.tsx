@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Volume2 } from 'lucide-react';
 import { GameContent } from '../../../types';
 import { soundService } from '../../../services/soundService';
 
@@ -19,11 +20,27 @@ export const LetterOrderGame = ({ content, onCorrect, onWrong }: GameProps) => {
   const [availableLetters, setAvailableLetters] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<'wrong' | null>(null);
 
+  const speak = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(content.answer);
+      utterance.rate = 0.8;
+      // We don't have the language prop here, but we can try to guess it from content or use default
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
   useEffect(() => {
     // Scramble letters
     const letters = content.answer.split('').sort(() => Math.random() - 0.5);
     setAvailableLetters(letters);
     setCurrentGuess('');
+    
+    // Auto-play after a short delay
+    const timer = setTimeout(() => {
+      speak();
+    }, 500);
+    return () => clearTimeout(timer);
   }, [content.answer]);
 
   const handleLetterClick = (letter: string, index: number) => {
@@ -55,8 +72,20 @@ export const LetterOrderGame = ({ content, onCorrect, onWrong }: GameProps) => {
 
   return (
     <div className="space-y-12 text-center">
-      <div className="space-y-4">
-        <h3 className="text-xl font-bold text-slate-400 uppercase tracking-widest">{content.question}</h3>
+      <div className="space-y-6">
+        <div className="flex flex-col items-center gap-4">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={speak}
+            className="w-20 h-20 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-indigo-700 transition-colors"
+          >
+            <Volume2 size={40} />
+          </motion.button>
+          <h3 className="text-xl font-bold text-slate-400 uppercase tracking-widest">
+            {content.question}
+          </h3>
+        </div>
         <div className="min-h-[100px] flex items-center justify-center gap-4">
           <AnimatePresence>
             {currentGuess.split('').map((char, i) => (
