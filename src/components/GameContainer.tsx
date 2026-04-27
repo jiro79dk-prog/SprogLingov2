@@ -25,6 +25,7 @@ interface GameContainerProps {
   onWrong: (hint: string) => void;
   onExit: () => void;
   feedback: { message: string; type: 'success' | 'error' | 'info' } | null;
+  isDarkMode: boolean;
 }
 
 export const GameContainer = ({
@@ -34,7 +35,8 @@ export const GameContainer = ({
   onCorrect,
   onWrong,
   onExit,
-  feedback
+  feedback,
+  isDarkMode
 }: GameContainerProps) => {
   const currentItem = contents[currentIndex];
 
@@ -43,9 +45,11 @@ export const GameContainer = ({
       key="playing"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card p-8 min-h-[600px] border-white bg-white/60 relative overflow-hidden flex flex-col"
+      className={`glass-card p-8 min-h-[600px] relative overflow-hidden flex flex-col ${
+        isDarkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white/60 border-white'
+      }`}
     >
-      <div className="absolute top-0 left-0 w-full h-2 bg-white/20">
+      <div className={`absolute top-0 left-0 w-full h-2 ${isDarkMode ? 'bg-slate-800' : 'bg-white/20'}`}>
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: `${((currentIndex + 1) / contents.length) * 100}%` }}
@@ -58,10 +62,12 @@ export const GameContainer = ({
           <span className="text-indigo-400 font-black text-xs tracking-[0.2em] uppercase">
             {currentItem.type} • {currentLanguage}
           </span>
-          <h2 className="text-2xl font-black text-slate-800">Opgaver</h2>
+          <h2 className="text-2xl font-black">{currentItem.type}</h2>
         </div>
         <div className="flex items-center gap-6">
-          <span className="text-xs font-black uppercase text-gray-400 tracking-widest bg-white/60 px-3 py-1 rounded-lg border border-white">
+          <span className={`text-xs font-black uppercase tracking-widest px-3 py-1 rounded-lg border ${
+            isDarkMode ? 'bg-slate-800/60 border-slate-700 text-slate-300' : 'bg-white/60 border-white text-gray-400'
+          }`}>
             {currentIndex + 1} / {contents.length}
           </span>
           <button onClick={onExit} className="text-gray-400 hover:text-red-500 transition-all hover:scale-110">

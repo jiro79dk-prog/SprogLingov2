@@ -5,10 +5,41 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Zap, Play, ChevronLeft, ChevronRight, User, BookOpen, GraduationCap, Settings } from 'lucide-react';
+import { 
+  Zap, 
+  Play, 
+  ChevronLeft, 
+  ChevronRight, 
+  User, 
+  BookOpen, 
+  GraduationCap, 
+  Settings,
+  Link2,
+  Volume2,
+  Eye,
+  Edit3,
+  Layers,
+  SortAsc,
+  Brain,
+  X
+} from 'lucide-react';
 import { LANGUAGES, GRADES, GRADE_LABELS, GAME_LABELS, GAME_TYPES } from '../constants';
 import { Language, Grade, GameType } from '../types';
 import { getAvailableGameTypes } from '../services/contentService';
+
+const AVATARS = ['🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐙', '🦖', '🦄', '🐝', '🦋', '🐢', '🐍', '🐘', '🦒', '🦓', '🦩'];
+
+const GAME_ICONS: Record<string, React.ReactNode> = {
+  'Random': <Zap size={24} className="text-yellow-500" />,
+  'Grammar': <BookOpen size={24} className="text-indigo-500" />,
+  'Match': <Link2 size={24} className="text-pink-500" />,
+  'Audio': <Volume2 size={24} className="text-blue-500" />,
+  'Reading': <Eye size={24} className="text-emerald-500" />,
+  'Cloze': <Edit3 size={24} className="text-orange-500" />,
+  'WordSort': <Layers size={24} className="text-purple-500" />,
+  'LetterOrder': <SortAsc size={24} className="text-cyan-500" />,
+  'Memory': <Brain size={24} className="text-rose-500" />
+};
 
 interface LobbyProps {
   currentLanguage: Language;
@@ -18,13 +49,16 @@ interface LobbyProps {
   isChallengeMode: boolean;
   setIsChallengeMode: (v: boolean) => void;
   scores: Record<Language, number>;
-  onStart: () => void;
+  onStart: (type?: GameType | 'Random', grade?: Grade) => void;
   userName: string;
   setUserName: (n: string) => void;
+  userAvatar: string;
+  setUserAvatar: (a: string) => void;
   isOnboarded: boolean;
   setIsOnboarded: (v: boolean) => void;
   selectedGameType: GameType | 'Random';
   setSelectedGameType: (t: GameType | 'Random') => void;
+  isDarkMode: boolean;
 }
 
 export const Lobby = ({
@@ -38,13 +72,22 @@ export const Lobby = ({
   onStart,
   userName,
   setUserName,
+  userAvatar,
+  setUserAvatar,
   isOnboarded,
   setIsOnboarded,
   selectedGameType,
-  setSelectedGameType
+  setSelectedGameType,
+  isDarkMode
 }: LobbyProps) => {
   const [showSettings, setShowSettings] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    const handleToggle = () => setShowSettings(prev => !prev);
+    window.addEventListener('toggle-settings', handleToggle);
+    return () => window.removeEventListener('toggle-settings', handleToggle);
+  }, []);
 
   if (!isOnboarded) {
     return (
@@ -63,6 +106,23 @@ export const Lobby = ({
           </div>
 
           <div className="space-y-6 text-left">
+            <div className="space-y-2">
+              <label className="text-xs font-black uppercase text-indigo-400 tracking-widest pl-4">Vælg din avatar</label>
+              <div className="grid grid-cols-5 gap-2 bg-white/40 p-3 rounded-2xl border-2 border-white">
+                {AVATARS.map(a => (
+                  <button
+                    key={a}
+                    onClick={() => setUserAvatar(a)}
+                    className={`w-10 h-10 flex items-center justify-center text-xl rounded-xl transition-all ${
+                      userAvatar === a ? 'bg-indigo-600 shadow-md ring-2 ring-indigo-200 scale-110' : 'bg-white/40 hover:bg-white'
+                    }`}
+                  >
+                    {a}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="space-y-2">
               <label className="text-xs font-black uppercase text-indigo-400 tracking-widest pl-4">Hvad hedder du?</label>
               <div className="relative">
@@ -121,129 +181,144 @@ export const Lobby = ({
     );
   }
 
+  const availableGames = getAvailableGameTypes(currentLanguage);
+
+  const GameRow = ({ type, label, description, icon }: { type: GameType | 'Random', label: string, description: string, icon: React.ReactNode }) => {
+    const [localGrade, setLocalGrade] = useState<Grade>(currentGrade);
+
+    return (
+      <div className={`flex flex-col md:flex-row items-center gap-4 p-3 md:p-4 rounded-3xl border transition-all group shadow-sm ${
+        isDarkMode ? 'bg-slate-800/40 border-slate-700/60 hover:bg-slate-800/60' : 'bg-white/40 border-white/60 hover:bg-white/80'
+      }`}>
+        <div className="flex items-center gap-4 flex-1 min-w-0">
+          <div className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center transition-all ${
+            selectedGameType === type 
+              ? 'bg-indigo-600 shadow-md ring-4 ring-indigo-50/10' 
+              : isDarkMode ? 'bg-slate-700 shadow-sm' : 'bg-white shadow-sm'
+          }`}>
+            {GAME_ICONS[type] || icon}
+          </div>
+          <div className="min-w-0">
+            <h3 className={`font-black truncate ${isDarkMode ? 'text-slate-100' : 'text-indigo-900'}`}>{label}</h3>
+            <p className="text-[10px] text-indigo-400 font-black uppercase tracking-wider">{description}</p>
+          </div>
+        </div>
+        
+        <div className={`flex items-center gap-2 p-1 rounded-2xl shrink-0 ${isDarkMode ? 'bg-slate-900/50' : 'bg-black/5'}`}>
+          <div className="flex flex-col items-center">
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setLocalGrade(prev => Math.min(10, prev + 1) as Grade);
+              }}
+              className="p-1 hover:text-indigo-600 text-indigo-300 transition-colors"
+            >
+              <ChevronLeft size={16} className="rotate-90" />
+            </button>
+            <div className={`w-8 h-6 rounded-lg flex items-center justify-center text-[10px] font-black shadow-sm border ${
+              isDarkMode ? 'bg-slate-700 text-indigo-400 border-slate-600' : 'bg-white text-indigo-600 border-indigo-50'
+            }`}>
+              {localGrade}
+            </div>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setLocalGrade(prev => Math.max(0, prev - 1) as Grade);
+              }}
+              className="p-1 hover:text-indigo-600 text-indigo-300 transition-colors"
+            >
+              <ChevronLeft size={16} className="-rotate-90" />
+            </button>
+          </div>
+          <div className="text-[7px] font-black text-indigo-400 uppercase tracking-tighter vertical-text pr-1">Klasse</div>
+        </div>
+  
+        <button
+          onClick={() => {
+            onStart(type, localGrade);
+          }}
+          className="w-full md:w-auto px-6 py-4 bg-indigo-600 text-white rounded-2xl font-black text-xs shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0 group-hover:px-8"
+        >
+          <span>SPIL</span>
+          <Play size={14} fill="currentColor" />
+        </button>
+      </div>
+    );
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, y: 20 }}
-      className="grid grid-cols-12 gap-8"
+      className="max-w-4xl mx-auto space-y-8"
     >
-      <header className="col-span-12 flex items-center justify-between glass-card px-8 py-4">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold">
-            {userName[0]?.toUpperCase()}
+      <div className={`glass-card p-6 md:p-8 ${isDarkMode ? 'bg-slate-900/60' : 'bg-white/60'}`}>
+        <div className={`flex flex-col md:flex-row items-center gap-6 mb-8 pb-8 border-b ${isDarkMode ? 'border-slate-800' : 'border-white'}`}>
+          <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-tr from-indigo-500 to-indigo-700 rounded-[2.5rem] flex items-center justify-center text-4xl shadow-2xl shadow-indigo-200 border-4 border-white">
+            {userAvatar}
           </div>
-          <div>
-            <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Velkommen tilbage</p>
-            <h2 className="text-xl font-black text-indigo-900">{userName} <span className="text-indigo-400 font-medium text-sm">({GRADE_LABELS[currentGrade]})</span></h2>
-          </div>
-        </div>
-        <button 
-          onClick={() => setShowSettings(!showSettings)}
-          className="p-2 hover:bg-indigo-50 rounded-lg text-indigo-400 transition-colors"
-        >
-          <Settings size={20} />
-        </button>
-      </header>
-
-      <aside className="col-span-12 lg:col-span-4 space-y-6">
-        <div className="glass-card p-6">
-          <h2 className="text-xs uppercase font-bold text-indigo-400 mb-6 tracking-widest">Vælg Sprog</h2>
-          <div className="space-y-3">
-            {LANGUAGES.map(lang => (
-              <button
-                key={lang}
-                onClick={() => setCurrentLanguage(lang)}
-                className={`w-full flex items-center justify-between p-4 rounded-2xl border transition-all ${
-                  currentLanguage === lang 
-                    ? 'bg-white shadow-md ring-2 ring-indigo-500/30 border-indigo-200' 
-                    : 'bg-white/40 border-white hover:bg-white/60'
+          <div className="text-center md:text-left flex-1">
+            <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em] mb-1">DIN PROFIL</p>
+            <h2 className={`text-3xl md:text-4xl font-black leading-none flex flex-wrap justify-center md:justify-start items-center gap-3 ${isDarkMode ? 'text-white' : 'text-indigo-900'}`}>
+              {userName}
+              <button 
+                onClick={() => setShowSettings(!showSettings)}
+                className={`text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${
+                  isDarkMode ? 'text-slate-400 border-slate-700 bg-slate-800 hover:text-slate-200' : 'text-indigo-400 border-white bg-white/40 hover:text-indigo-600'
                 }`}
               >
-                <span className={`text-sm font-bold ${currentLanguage === lang ? 'text-indigo-900' : 'text-gray-600'}`}>{lang}</span>
-                <div className="flex items-center gap-2">
-                  <span className={`text-[10px] font-black px-2 py-1 rounded-lg ${
-                    currentLanguage === lang ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-500'
-                  }`}>
-                    {scores[lang]} pts
-                  </span>
-                </div>
+                Skift
               </button>
+            </h2>
+            <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-4">
+              {isChallengeMode && (
+                <span className="bg-orange-500 px-4 py-1.5 rounded-full text-[10px] font-black text-white shadow-md animate-pulse uppercase tracking-widest flex items-center gap-2">
+                  <Zap size={12} fill="currentColor" />
+                  BOOST AKTIV
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="flex items-center justify-between px-2">
+            <h2 className="text-xs font-black uppercase text-indigo-400 tracking-[0.2em]">Spil bibliotek</h2>
+            <button
+              onClick={() => setIsChallengeMode(!isChallengeMode)}
+              className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${
+                isChallengeMode 
+                  ? 'bg-orange-500 text-white border-orange-600 shadow-md' 
+                  : 'bg-white text-indigo-400 border-indigo-100 hover:border-indigo-300'
+              }`}
+            >
+              <Zap size={12} className={isChallengeMode ? 'fill-current' : ''} />
+              {isChallengeMode ? 'Udfordring aktiv' : 'Udfordring OFF'}
+            </button>
+          </div>
+
+          <div className="space-y-3">
+            <GameRow 
+              type="Random" 
+              label="Blandet Pose" 
+              description="Tilfældige udfordringer" 
+              icon={<Zap size={24} />} 
+            />
+            
+            {availableGames.map(type => (
+              <div key={type}>
+                <GameRow 
+                  type={type}
+                  label={GAME_LABELS[type]}
+                  description="Træn dine færdigheder"
+                  icon={GAME_ICONS[type]}
+                />
+              </div>
             ))}
           </div>
         </div>
-
-        <button
-          onClick={() => setIsChallengeMode(!isChallengeMode)}
-          className={`group relative overflow-hidden p-6 rounded-[2.5rem] shadow-xl transition-all active:scale-95 text-left border-4 border-white w-full ${
-            isChallengeMode 
-              ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white' 
-              : 'bg-gradient-to-r from-indigo-100 to-blue-200 text-indigo-900'
-          }`}
-        >
-          <div className="relative z-10">
-            <p className="text-[10px] font-bold uppercase tracking-wider opacity-80">
-              Niveau: {GRADE_LABELS[Math.min(currentGrade + 1, 10) as Grade]}
-            </p>
-            <h3 className="text-2xl font-black">Udfordre mig!</h3>
-            <p className="text-xs mt-1 font-medium italic">Optjen 1,5x flere point nu</p>
-          </div>
-          <div className="absolute top-2 right-4 text-4xl transform group-hover:scale-125 transition-transform text-white/40">⚡</div>
-          {isChallengeMode && (
-            <motion.div 
-              className="absolute inset-0 bg-white/20" 
-              animate={{ x: ['100%', '-100%'] }} 
-              transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} 
-            />
-          )}
-        </button>
-      </aside>
-
-      <section className="col-span-12 lg:col-span-8 space-y-8">
-        <div className="glass-card p-8 bg-white/60">
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <h2 className="text-xs font-black uppercase text-indigo-400 tracking-widest pl-2">Vælg spiltype</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <button
-                  onClick={() => setSelectedGameType('Random')}
-                  className={`p-4 rounded-2xl border-2 transition-all text-sm font-bold flex flex-col items-center gap-2 ${
-                    selectedGameType === 'Random'
-                      ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg'
-                      : 'bg-white border-white text-gray-600 hover:border-indigo-200'
-                  }`}
-                >
-                  <Zap size={20} />
-                  Blandet
-                </button>
-                {getAvailableGameTypes(currentLanguage, currentGrade).map(type => (
-                  <button
-                    key={type}
-                    onClick={() => setSelectedGameType(type)}
-                    className={`p-4 rounded-2xl border-2 transition-all text-sm font-bold flex flex-col items-center gap-2 ${
-                      selectedGameType === type
-                        ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg'
-                        : 'bg-white border-white text-gray-600 hover:border-indigo-200'
-                    }`}
-                  >
-                    <BookOpen size={20} />
-                    {GAME_LABELS[type]}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-white">
-              <button
-                onClick={onStart}
-                className="w-full bg-gradient-to-tr from-indigo-500 to-purple-600 text-white p-6 rounded-[2rem] font-black text-2xl shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-4 group"
-              >
-                <Play size={32} className="group-hover:translate-x-1 transition-transform" fill="currentColor" />
-                START SPIL
-              </button>
-            </div>
-          </div>
-        </div>
+      </div>
 
         {showSettings && (
           <motion.div 
@@ -255,30 +330,49 @@ export const Lobby = ({
               <h3 className="font-black text-indigo-900">Indstillinger</h3>
               <button onClick={() => setShowSettings(false)} className="text-xs font-bold text-indigo-400">Luk</button>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-[10px] font-black text-indigo-400 uppercase block mb-1">Skift navn</label>
-                <input 
-                   type="text" 
-                   value={userName} 
-                   onChange={(e) => setUserName(e.target.value)}
-                   className="w-full bg-white border border-indigo-100 rounded-lg p-2 text-sm font-bold text-indigo-900 outline-none"
-                />
+            
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-indigo-400 uppercase block mb-1">Skift avatar</label>
+                <div className="flex flex-wrap gap-2">
+                  {AVATARS.map(a => (
+                    <button
+                      key={a}
+                      onClick={() => setUserAvatar(a)}
+                      className={`w-9 h-9 flex items-center justify-center text-lg rounded-lg transition-all ${
+                        userAvatar === a ? 'bg-indigo-600 shadow-md scale-110' : 'bg-white hover:bg-indigo-50 border border-indigo-50'
+                      }`}
+                    >
+                      {a}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div>
-                <label className="text-[10px] font-black text-indigo-400 uppercase block mb-1">Skift niveau</label>
-                <select 
-                  value={currentGrade} 
-                  onChange={(e) => setCurrentGrade(() => parseInt(e.target.value) as Grade)}
-                  className="w-full bg-white border border-indigo-100 rounded-lg p-2 text-sm font-bold text-indigo-900 outline-none"
-                >
-                  {GRADES.map(g => <option key={g} value={g}>{GRADE_LABELS[g]}</option>)}
-                </select>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] font-black text-indigo-400 uppercase block mb-1">Skift navn</label>
+                  <input 
+                    type="text" 
+                    value={userName} 
+                    onChange={(e) => setUserName(e.target.value)}
+                    className="w-full bg-white border border-indigo-100 rounded-lg p-2 text-sm font-bold text-indigo-900 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-black text-indigo-400 uppercase block mb-1">Skift niveau</label>
+                  <select 
+                    value={currentGrade} 
+                    onChange={(e) => setCurrentGrade(() => parseInt(e.target.value) as Grade)}
+                    className="w-full bg-white border border-indigo-100 rounded-lg p-2 text-sm font-bold text-indigo-900 outline-none"
+                  >
+                    {GRADES.map(g => <option key={g} value={g}>{GRADE_LABELS[g]}</option>)}
+                  </select>
+                </div>
               </div>
             </div>
           </motion.div>
         )}
-      </section>
     </motion.div>
   );
 };

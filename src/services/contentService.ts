@@ -47,9 +47,9 @@ export async function generateGameContent(
   return results.sort(() => Math.random() - 0.5).slice(0, 20);
 }
 
-export function getAvailableGameTypes(language: Language, grade: Grade): GameType[] {
+export function getAvailableGameTypes(language: Language): GameType[] {
   return (Object.keys(ALL_DATA) as GameType[]).filter(type => {
     const gameDatabase = ALL_DATA[type];
-    return gameDatabase[language]?.[grade] && gameDatabase[language][grade].length > 0;
+    return gameDatabase[language] && Object.keys(gameDatabase[language]).length > 0;
   });
 }

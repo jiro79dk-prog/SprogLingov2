@@ -1,12 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;900&family=Inter:wght@400;700;900&family=Outfit:wght@400;700;900&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Outfit", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-dyslexic: "Lexend", sans-serif;
 }
 
 body {
   @apply selection:bg-indigo-300 antialiased;
+}
+
+.dyslexic-mode {
+  font-family: var(--font-dyslexic) !important;
+  letter-spacing: 0.05em;
+  word-spacing: 0.1em;
+  line-height: 1.5 !important;
+}
+
+.dyslexic-mode * {
+  font-family: inherit !important;
+  text-align: left !important;
+  font-size: max(16px, 1em) !important;
+}
+
+.dark-mode {
+  color-scheme: dark;
+}
+
+.dark-mode .glass-card {
+  @apply bg-slate-900/60 border-slate-700/60;
+}
+
+.dark-mode h1, .dark-mode h2, .dark-mode h3 {
+  @apply text-slate-100;
+}
+
+.dark-mode p, .dark-mode span:not(.text-white) {
+  @apply text-slate-300;
+}
+
+.dark-mode .bg-white {
+  background-color: theme('colors.slate.800') !important;
+}
+
+.dark-mode .border-gray-200 {
+  border-color: theme('colors.slate.700') !important;
+}
+  
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
 
 .glass-card {

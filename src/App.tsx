@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence } from 'motion/react';
-import { Languages, Trophy, Zap } from 'lucide-react';
+import { Languages, Trophy, Zap, Settings, Moon, Sun } from 'lucide-react';
 import { Language, Grade, GameContent, GameType } from './types';
 import { LANGUAGE_THEMES } from './constants';
 import { generateGameContent } from './services/contentService';
@@ -16,6 +16,7 @@ import { SparkleEffect } from './components/Effects';
 
 export default function App() {
   const [userName, setUserName] = useState(() => localStorage.getItem('sproglingo_user') || '');
+  const [userAvatar, setUserAvatar] = useState(() => localStorage.getItem('sproglingo_avatar') || '🦊');
   const [isOnboarded, setIsOnboarded] = useState(() => localStorage.getItem('sproglingo_onboarded') === 'true');
   const [selectedGameType, setSelectedGameType] = useState<GameType | 'Random'>('Random');
   const [currentGrade, setCurrentGrade] = useState<Grade>(() => {
@@ -33,8 +34,14 @@ export default function App() {
     return saved ? parseInt(saved) : 100;
   });
 
+  const [isDyslexicMode, setIsDyslexicMode] = useState(() => localStorage.getItem('sproglingo_dyslexic') === 'true');
+  const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('sproglingo_dark') === 'true');
+
+  useEffect(() => { localStorage.setItem('sproglingo_dyslexic', isDyslexicMode.toString()); }, [isDyslexicMode]);
+  useEffect(() => { localStorage.setItem('sproglingo_dark', isDarkMode.toString()); }, [isDarkMode]);
   useEffect(() => { localStorage.setItem('sproglingo_grade', currentGrade.toString()); }, [currentGrade]);
   useEffect(() => { localStorage.setItem('sproglingo_user', userName); }, [userName]);
+  useEffect(() => { localStorage.setItem('sproglingo_avatar', userAvatar); }, [userAvatar]);
   useEffect(() => { localStorage.setItem('sproglingo_onboarded', isOnboarded.toString()); }, [isOnboarded]);
   useEffect(() => { localStorage.setItem('sproglingo_scores', JSON.stringify(scores)); }, [scores]);
   useEffect(() => { localStorage.setItem('sproglingo_font', fontSize.toString()); }, [fontSize]);
@@ -44,12 +51,16 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [feedback, setFeedback] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
-  const startLevel = async () => {
+  const startLevel = async (overrideType?: GameType | 'Random', overrideGrade?: Grade) => {
     setGameState('loading');
-    const gradeToUse = isChallengeMode ? Math.min(currentGrade + 1, 10) as Grade : currentGrade;
+    const typeToUse = overrideType || selectedGameType;
+    const gradeToUseBase = overrideGrade !== undefined ? overrideGrade : currentGrade;
+    const gradeToUse = isChallengeMode ? Math.min(gradeToUseBase + 1, 10) as Grade : gradeToUseBase;
+    
     const types: GameType[] = ['Match', 'Audio', 'Reading', 'Grammar', 'Cloze', 'WordSort', 'LetterOrder', 'Memory'];
-    const typeToUse = selectedGameType === 'Random' ? types[Math.floor(Math.random() * types.length)] : selectedGameType;
-    const newItems = await generateGameContent(currentLanguage, gradeToUse, typeToUse);
+    const finalType = typeToUse === 'Random' ? types[Math.floor(Math.random() * types.length)] : typeToUse;
+    
+    const newItems = await generateGameContent(currentLanguage, gradeToUse, finalType);
     
     if (newItems?.length > 0) {
       setContents(newItems);
@@ -91,24 +102,93 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen font-sans bg-gradient-to-br from-[#E0F2FE] via-[#F5F3FF] to-[#ECFDF5] p-6 transition-all" style={{ fontSize: `${fontSize}%` }}>
-      <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] bg-purple-300 rounded-full blur-3xl opacity-30 pointer-events-none" />
-      {isChallengeMode && <SparkleEffect />}
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        <header className="glass-card px-6 py-4 mb-8 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-tr from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg"><Languages size={24} /></div>
-            <div><h1 className="text-2xl font-black text-indigo-900">SprogLingo</h1><p className="text-[10px] font-bold uppercase tracking-widest text-indigo-400 font-mono">Ved Bolvig Solutions</p></div>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3 bg-white/60 px-4 py-2 rounded-2xl border border-white text-indigo-900 font-bold shadow-sm">
-              <Trophy size={18} className="text-amber-500" /><span className="font-mono">{scores[currentLanguage]} </span>
+    <div className={`min-h-screen ${isDyslexicMode ? 'dyslexic-mode' : 'font-sans'} ${isDarkMode ? 'dark-mode bg-slate-950' : isDyslexicMode ? 'bg-[#FAF9F6]' : 'bg-gradient-to-br from-[#E0F2FE] via-[#F5F3FF] to-[#ECFDF5]'} transition-all`} style={{ fontSize: `${fontSize}%` }}>
+      <div className={`fixed top-0 left-0 right-0 z-50 ${isDarkMode ? 'bg-slate-900/80 border-slate-800' : 'bg-white/60 border-white/80'} backdrop-blur-md border-b h-20 px-4 md:px-8`}>
+        <div className="max-w-6xl mx-auto h-full flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md">
+              <Languages size={18} />
+            </div>
+            <div className="hidden sm:block">
+              <h1 className={`text-sm md:text-base font-black leading-tight ${isDarkMode ? 'text-white' : 'text-indigo-900'}`}>SprogLingo</h1>
+              <div className="flex items-center gap-1.5">
+                <p className={`text-[8px] font-bold uppercase tracking-tighter ${isDarkMode ? 'text-slate-400' : 'text-indigo-400'}`}>Bolvig Solutions</p>
+                <div className={`w-[2px] h-[2px] rounded-full ${isDarkMode ? 'bg-slate-700' : 'bg-indigo-200'}`} />
+                <p className={`text-[8px] font-black uppercase tracking-tighter ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{currentGrade}. Klasse</p>
+              </div>
             </div>
           </div>
-        </header>
 
-        <main>
+          <div className="flex items-center gap-1 md:gap-2 overflow-x-auto no-scrollbar py-2">
+            {['Dansk', 'Engelsk', 'Tysk', 'Fransk', 'Spansk'].map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setCurrentLanguage(lang as Language)}
+                className={`flex flex-col items-center px-3 py-1 rounded-xl transition-all min-w-[55px] ${
+                  currentLanguage === lang 
+                    ? 'bg-indigo-600 text-white shadow-md' 
+                    : 'bg-white/40 text-gray-500 hover:bg-white/60'
+                }`}
+              >
+                <span className="text-[10px] font-black uppercase tracking-tighter">
+                  {lang === 'Engelsk' ? 'EN' : lang === 'Dansk' ? 'DA' : lang === 'Tysk' ? 'DE' : lang === 'Fransk' ? 'FR' : 'ES'}
+                </span>
+                <span className={`text-[8px] font-mono font-bold ${currentLanguage === lang ? 'text-white/80' : 'text-indigo-400'}`}>
+                  {scores[lang as Language] || 0}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className={`p-2.5 rounded-xl transition-all border ${
+                isDarkMode 
+                  ? 'bg-slate-800 text-yellow-400 border-slate-700' 
+                  : 'bg-white/80 text-gray-500 border-gray-200 hover:border-indigo-300'
+              }`}
+              title="Skift tema"
+            >
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+
+            <button
+              onClick={() => setIsDyslexicMode(!isDyslexicMode)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all border ${
+                isDyslexicMode 
+                  ? 'bg-indigo-600 text-white border-indigo-700 shadow-md shadow-indigo-100' 
+                  : isDarkMode ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-white/80 text-gray-600 border-gray-200 hover:border-indigo-300'
+              }`}
+              title="Aktiver ordblind-visning"
+            >
+              <Zap size={14} className={isDyslexicMode ? 'fill-current' : ''} />
+              <span className="hidden md:inline">Ordblind</span>
+            </button>
+
+              <button 
+                onClick={() => {
+                  if (gameState === 'lobby') {
+                    const event = new CustomEvent('toggle-settings');
+                    window.dispatchEvent(event);
+                  }
+                }}
+                className={`p-2.5 rounded-xl transition-all border ${
+                  isDarkMode ? 'bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200' : 'bg-white/80 text-indigo-400 border-gray-200 hover:border-indigo-300'
+                }`}
+              >
+                <Settings size={20} />
+              </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="pt-28 pb-8 px-4 md:px-6">
+        <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] bg-purple-300 rounded-full blur-3xl opacity-30 pointer-events-none" />
+        {isChallengeMode && <SparkleEffect />}
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          <main>
           <AnimatePresence mode="wait">
             {gameState === 'lobby' && (
               <Lobby 
@@ -122,10 +202,13 @@ export default function App() {
                 onStart={startLevel}
                 userName={userName}
                 setUserName={setUserName}
+                userAvatar={userAvatar}
+                setUserAvatar={setUserAvatar}
                 isOnboarded={isOnboarded}
                 setIsOnboarded={setIsOnboarded}
                 selectedGameType={selectedGameType}
                 setSelectedGameType={setSelectedGameType}
+                isDarkMode={isDarkMode}
               />
             )}
             {gameState === 'playing' && (
@@ -137,6 +220,7 @@ export default function App() {
                 onWrong={handleWrong} 
                 onExit={() => setGameState('lobby')} 
                 feedback={feedback} 
+                isDarkMode={isDarkMode}
               />
             )}
             {gameState === 'loading' && <div className="glass-card p-32 text-center space-y-4"><div className="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" /><h2 className="text-xl font-bold">Gør klar...</h2></div>}
@@ -144,5 +228,6 @@ export default function App() {
         </main>
       </div>
     </div>
-  );
+  </div>
+);
 }
