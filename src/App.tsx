@@ -58,10 +58,12 @@ export default function App() {
   const [gameState, setGameState] = useState<'lobby' | 'playing' | 'loading'>('lobby');
   const [contents, setContents] = useState<GameContent[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [wrongAttempts, setWrongAttempts] = useState(0);
   const [feedback, setFeedback] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
   const startLevel = async (overrideType?: GameType | 'Random', overrideGrade?: Grade) => {
     setGameState('loading');
+    setWrongAttempts(0);
     const typeToUse = overrideType || selectedGameType;
     const gradeToUseBase = overrideGrade !== undefined ? overrideGrade : currentGrade;
     const gradeToUse = isChallengeMode ? Math.min(gradeToUseBase + 1, 10) as Grade : gradeToUseBase;
@@ -83,7 +85,18 @@ export default function App() {
   };
 
   const handleCorrect = useCallback(() => {
-    const points = Math.round(10 * (isChallengeMode ? 1.5 : 1));
+    const currentItem = contents[currentIndex];
+    const isPlaybackGame = currentItem?.type === 'Audio' || currentItem?.type === 'Reading';
+    
+    let basePoints = 10 * (isChallengeMode ? 1.5 : 1);
+    
+    // Halve points for each wrong attempt, except for playback games
+    if (!isPlaybackGame && wrongAttempts > 0) {
+      basePoints = basePoints / Math.pow(2, wrongAttempts);
+    }
+    
+    const points = Math.max(1, Math.round(basePoints));
+    
     setScores(prev => ({ ...prev, [currentLanguage]: prev[currentLanguage] + points }));
     setFeedback({ message: `Flot! + ${points} point!`, type: 'success' });
     
@@ -96,15 +109,17 @@ export default function App() {
     setTimeout(() => {
       if (currentIndex < contents.length - 1) {
         setCurrentIndex(v => v + 1);
+        setWrongAttempts(0);
         setFeedback(null);
       } else {
         setGameState('lobby');
         setFeedback({ message: "Level gennemført!", type: 'info' });
       }
     }, 1500);
-  }, [currentIndex, contents, currentLanguage, isChallengeMode]);
+  }, [currentIndex, contents, currentLanguage, isChallengeMode, wrongAttempts]);
 
   const handleWrong = useCallback((hint: string) => {
+    setWrongAttempts(prev => prev + 1);
     soundService.playWrong();
     setFeedback({ message: hint, type: 'error' });
     setTimeout(() => setFeedback(null), 3000);
