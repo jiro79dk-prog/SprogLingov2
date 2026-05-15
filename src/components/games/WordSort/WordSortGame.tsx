@@ -55,7 +55,7 @@ export const WordSortGame = ({ content, onCorrect, onWrong }: GameProps) => {
   return (
     <div className="space-y-12">
       <div className="text-center">
-        <h3 className="text-2xl font-bold text-slate-400 uppercase tracking-widest mb-4">
+        <h3 className="text-lg md:text-2xl font-bold text-slate-400 uppercase tracking-widest mb-4">
           Sorter ordet
         </h3>
         <AnimatePresence mode="wait">
@@ -64,7 +64,7 @@ export const WordSortGame = ({ content, onCorrect, onWrong }: GameProps) => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
-            className={`text-6xl font-black p-12 bg-white rounded-[2rem] shadow-xl inline-block min-w-[300px] ${
+            className={`text-3xl md:text-6xl font-black p-8 md:p-12 bg-white rounded-2xl md:rounded-[2rem] shadow-xl inline-block min-w-[200px] md:min-w-[300px] ${
               feedback === 'correct' ? 'bg-green-50 text-green-600' : 
               feedback === 'wrong' ? 'bg-red-50 text-red-600' : 'text-indigo-900'
             }`}
@@ -74,14 +74,14 @@ export const WordSortGame = ({ content, onCorrect, onWrong }: GameProps) => {
         </AnimatePresence>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
         {content.options?.map((category) => (
           <motion.button
             key={category}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSort(category)}
-            className="p-8 bg-indigo-50 border-4 border-indigo-100 rounded-[2rem] text-xl font-black text-indigo-700 hover:bg-indigo-100 transition-colors"
+            className="p-4 md:p-8 bg-indigo-50 border-2 md:border-4 border-indigo-100 rounded-xl md:rounded-[2rem] text-sm md:text-xl font-black text-indigo-700 hover:bg-indigo-100 transition-colors"
           >
             {category}
           </motion.button>

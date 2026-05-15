@@ -60,14 +60,14 @@ export const AdminDashboard = ({ onExit, isDarkMode }: AdminDashboardProps) => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`max-w-md mx-auto glass-card p-10 ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`}
+        className={`max-w-md mx-auto glass-card p-6 md:p-10 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-white'}`}
       >
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-4">
-            <Lock size={32} />
+        <div className="text-center mb-6 md:mb-8">
+          <div className="w-12 h-12 md:w-16 md:h-16 bg-indigo-100 text-indigo-600 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-4">
+            <Lock size={24} className="md:w-8 md:h-8" />
           </div>
-          <h2 className={`text-2xl font-black ${isDarkMode ? 'text-white' : 'text-indigo-900'}`}>Admin Login</h2>
-          <p className="text-xs text-indigo-400 font-bold uppercase tracking-widest mt-1">Kun for personale</p>
+          <h2 className={`text-xl md:text-2xl font-black ${isDarkMode ? 'text-white' : 'text-indigo-900'}`}>Admin Login</h2>
+          <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-widest mt-1">Kun for personale</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
@@ -77,7 +77,7 @@ export const AdminDashboard = ({ onExit, isDarkMode }: AdminDashboardProps) => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-indigo-50/50 border border-indigo-100 rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 ring-indigo-500/20"
+              className={`w-full ${isDarkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-indigo-50/50 border-indigo-100 text-indigo-900'} border rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 ring-indigo-500/20`}
               placeholder="admin"
             />
           </div>
@@ -87,23 +87,23 @@ export const AdminDashboard = ({ onExit, isDarkMode }: AdminDashboardProps) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-indigo-50/50 border border-indigo-100 rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 ring-indigo-500/20"
+              className={`w-full ${isDarkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-indigo-50/50 border-indigo-100 text-indigo-900'} border rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 ring-indigo-500/20`}
               placeholder="••••••••"
             />
           </div>
-          {error && <p className="text-xs font-bold text-red-500 text-center">{error}</p>}
+          {error && <p className="text-[10px] font-bold text-red-500 text-center">{error}</p>}
           
-          <div className="pt-4 flex flex-col gap-3">
+          <div className="pt-2 md:pt-4 flex flex-col gap-3">
             <button 
               type="submit"
-              className="w-full bg-indigo-600 text-white p-4 rounded-2xl font-black shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all"
+              className="w-full bg-indigo-600 text-white p-4 rounded-2xl font-black shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all text-sm"
             >
               LOG IND
             </button>
             <button 
               type="button"
               onClick={onExit}
-              className="w-full py-2 text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-indigo-600 transition-colors"
+              className="w-full py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest hover:text-indigo-600 transition-colors"
             >
               Annuller
             </button>
@@ -117,21 +117,21 @@ export const AdminDashboard = ({ onExit, isDarkMode }: AdminDashboardProps) => {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="max-w-6xl mx-auto space-y-8"
+      className="max-w-6xl mx-auto space-y-6 md:space-y-8 px-4 md:px-0"
     >
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <button onClick={onExit} className="p-3 bg-white rounded-2xl shadow-sm text-indigo-400 hover:text-indigo-600 transition-all">
-            <ArrowLeft size={24} />
+          <button onClick={onExit} className={`p-3 rounded-2xl shadow-sm ${isDarkMode ? 'bg-slate-800 text-slate-400' : 'bg-white text-indigo-400'} hover:text-indigo-600 transition-all`}>
+            <ArrowLeft size={20} className="md:w-6 md:h-6" />
           </button>
           <div>
-            <h1 className={`text-2xl font-black ${isDarkMode ? 'text-white' : 'text-indigo-900'}`}>System Oversigt</h1>
-            <p className="text-xs text-indigo-400 font-bold uppercase tracking-widest">Database Statistikker</p>
+            <h1 className={`text-xl md:text-2xl font-black ${isDarkMode ? 'text-white' : 'text-indigo-900'}`}>System Oversigt</h1>
+            <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">Database Statistikker</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 bg-indigo-600 text-white px-6 py-3 rounded-2xl shadow-lg shadow-indigo-100">
-          <Database size={20} />
-          <span className="font-black text-xl">{stats.total} <span className="text-xs font-bold opacity-70">OPGAVER TOTAL</span></span>
+        <div className="flex items-center gap-3 bg-indigo-600 text-white px-5 md:px-6 py-3 rounded-2xl shadow-lg shadow-indigo-100 self-start md:self-auto">
+          <Database size={18} className="md:w-5 md:h-5" />
+          <span className="font-black text-lg md:text-xl">{stats.total} <span className="text-[10px] font-bold opacity-70 uppercase">OPGAVER TOTAL</span></span>
         </div>
       </div>
 

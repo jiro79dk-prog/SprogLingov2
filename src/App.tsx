@@ -127,10 +127,10 @@ export default function App() {
 
   return (
     <div className={`min-h-screen ${isDyslexicMode ? 'dyslexic-mode' : 'font-sans'} ${isDarkMode ? 'dark-mode bg-slate-950' : isDyslexicMode ? 'bg-[#FAF9F6]' : 'bg-gradient-to-br from-[#E0F2FE] via-[#F5F3FF] to-[#ECFDF5]'} transition-all`} style={{ fontSize: `${fontSize}%` }}>
-      <div className={`fixed top-0 left-0 right-0 z-50 ${isDarkMode ? 'bg-slate-900/80 border-slate-800' : 'bg-white/60 border-white/80'} backdrop-blur-md border-b h-20 px-4 md:px-8`}>
-        <div className="max-w-6xl mx-auto h-full flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md">
+      <div className={`fixed top-0 left-0 right-0 z-50 ${isDarkMode ? 'bg-slate-900/80 border-slate-800' : 'bg-white/60 border-white/80'} backdrop-blur-md border-b h-16 md:h-20 px-2 md:px-8`}>
+        <div className="max-w-6xl mx-auto h-full flex items-center justify-between gap-2 md:gap-4">
+          <div className="flex items-center gap-1 md:gap-2 shrink-0">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-indigo-600 rounded-lg md:rounded-xl flex items-center justify-center text-white shadow-md">
               <Languages size={18} />
             </div>
             <div className="hidden sm:block">
@@ -143,51 +143,50 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex items-center gap-1 md:gap-2 overflow-x-auto no-scrollbar py-2">
+          <div className="flex items-center gap-1 md:gap-2 overflow-x-auto no-scrollbar py-1 flex-1 md:flex-none justify-center">
             {['Dansk', 'Engelsk', 'Tysk', 'Fransk', 'Spansk'].map((lang) => (
               <button
                 key={lang}
                 onClick={() => setCurrentLanguage(lang as Language)}
-                className={`flex flex-col items-center px-3 py-1 rounded-xl transition-all min-w-[55px] ${
+                className={`flex flex-col items-center px-1.5 md:px-3 py-0.5 md:py-1 rounded-lg md:rounded-xl transition-all min-w-[38px] md:min-w-[55px] ${
                   currentLanguage === lang 
                     ? 'bg-indigo-600 text-white shadow-md' 
                     : 'bg-white/40 text-gray-500 hover:bg-white/60'
                 }`}
               >
-                <span className="text-[10px] font-black uppercase tracking-tighter">
+                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-tighter">
                   {lang === 'Engelsk' ? 'EN' : lang === 'Dansk' ? 'DA' : lang === 'Tysk' ? 'DE' : lang === 'Fransk' ? 'FR' : 'ES'}
                 </span>
-                <span className={`text-[8px] font-mono font-bold ${currentLanguage === lang ? 'text-white/80' : 'text-indigo-400'}`}>
+                <span className={`text-[7px] md:text-[8px] font-mono font-bold ${currentLanguage === lang ? 'text-white/80' : 'text-indigo-400'}`}>
                   {scores[lang as Language] || 0}
                 </span>
               </button>
             ))}
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className={`p-2.5 rounded-xl transition-all border ${
+              className={`p-1.5 md:p-2.5 rounded-lg md:rounded-xl transition-all border ${
                 isDarkMode 
                   ? 'bg-slate-800 text-yellow-400 border-slate-700' 
                   : 'bg-white/80 text-gray-500 border-gray-200 hover:border-indigo-300'
               }`}
               title="Skift tema"
             >
-              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+              {isDarkMode ? <Sun size={14} className="md:w-5 md:h-5" /> : <Moon size={14} className="md:w-5 md:h-5" />}
             </button>
 
             <button
               onClick={() => setIsDyslexicMode(!isDyslexicMode)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all border ${
+              className={`flex items-center gap-1 px-2 py-1.5 md:px-3 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-xs font-bold transition-all border ${
                 isDyslexicMode 
-                  ? 'bg-indigo-600 text-white border-indigo-700 shadow-md shadow-indigo-100' 
+                  ? 'bg-indigo-600 text-white border-indigo-700 shadow-md' 
                   : isDarkMode ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-white/80 text-gray-600 border-gray-200 hover:border-indigo-300'
               }`}
-              title="Aktiver ordblind-visning"
             >
-              <Zap size={14} className={isDyslexicMode ? 'fill-current' : ''} />
-              <span className="hidden md:inline">Ordblind</span>
+              <Zap size={12} className={isDyslexicMode ? 'fill-current' : ''} />
+              <span className="hidden sm:inline">Ordblind</span>
             </button>
 
               <button 
@@ -197,17 +196,17 @@ export default function App() {
                     window.dispatchEvent(event);
                   }
                 }}
-                className={`p-2.5 rounded-xl transition-all border ${
+                className={`p-1.5 md:p-2.5 rounded-lg md:rounded-xl transition-all border ${
                   isDarkMode ? 'bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200' : 'bg-white/80 text-indigo-400 border-gray-200 hover:border-indigo-300'
                 }`}
               >
-                <Settings size={20} />
+                <Settings size={16} className="md:w-5 md:h-5" />
               </button>
           </div>
         </div>
       </div>
 
-      <div className="pt-28 pb-8 px-4 md:px-6">
+      <div className="pt-24 md:pt-28 pb-8 px-2 md:px-6">
         <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] bg-purple-300 rounded-full blur-3xl opacity-30 pointer-events-none" />
         {isChallengeMode && <SparkleEffect />}
 

@@ -60,11 +60,11 @@ export const GameContainer = ({
       key="playing"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`glass-card p-8 min-h-[600px] relative overflow-hidden flex flex-col ${
+      className={`glass-card p-4 md:p-8 min-h-[500px] md:min-h-[600px] relative overflow-hidden flex flex-col ${
         isDarkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white/60 border-white'
       }`}
     >
-      <div className={`absolute top-0 left-0 w-full h-2 ${isDarkMode ? 'bg-slate-800' : 'bg-white/20'}`}>
+      <div className={`absolute top-0 left-0 w-full h-1.5 md:h-2 ${isDarkMode ? 'bg-slate-800' : 'bg-white/20'}`}>
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: `${((currentIndex + 1) / contents.length) * 100}%` }}
@@ -72,28 +72,28 @@ export const GameContainer = ({
         />
       </div>
 
-      <div className="flex justify-between items-center mb-10 pt-4">
-        <div>
-          <span className="text-indigo-400 font-black text-xs tracking-[0.2em] uppercase">
-            {formattedItem.type} • {currentLanguage}
+      <div className="flex justify-between items-center mb-6 md:mb-10 pt-2 md:pt-4">
+        <div className="min-w-0">
+          <span className="text-indigo-400 font-black text-[10px] md:text-xs tracking-[0.2em] uppercase block md:inline">
+            {formattedItem.type} <span className="hidden md:inline">•</span> <span className="md:inline">{currentLanguage}</span>
           </span>
-          <h2 className="text-2xl font-black">{formattedItem.type}</h2>
+          <h2 className="text-xl md:text-2xl font-black truncate">{formattedItem.type}</h2>
         </div>
-        <div className="flex items-center gap-6">
-          <span className={`text-xs font-black uppercase tracking-widest px-3 py-1 rounded-lg border ${
+        <div className="flex items-center gap-3 md:gap-6 shrink-0">
+          <span className={`text-[10px] md:text-xs font-black uppercase tracking-widest px-2 md:px-3 py-1 rounded-lg border ${
             isDarkMode ? 'bg-slate-800/60 border-slate-700 text-slate-300' : 'bg-white/60 border-white text-gray-400'
           }`}>
             {currentIndex + 1} / {contents.length}
           </span>
           <button onClick={onExit} className="text-gray-400 hover:text-red-500 transition-all hover:scale-110">
-            <XCircle size={32} />
+            <XCircle size={28} className="md:w-8 md:h-8" />
           </button>
         </div>
       </div>
 
       <div className="flex-1 flex flex-col min-h-0">
-        <div className="flex-1 flex flex-col justify-center py-8">
-          <p className="text-xs font-black text-indigo-300 uppercase tracking-[0.3em] mb-4 text-center">
+        <div className="flex-1 flex flex-col justify-center py-4 md:py-8">
+          <p className="text-[10px] md:text-xs font-black text-indigo-300 uppercase tracking-[0.3em] mb-4 text-center">
             {formattedItem.instruction}
           </p>
           
@@ -121,8 +121,10 @@ export const GameContainer = ({
         </div>
       </div>
 
-      <div className="absolute bottom-4 left-8 opacity-20 text-[10px] font-mono pointer-events-none">
-        # {formattedItem.id}
+      <div className={`absolute bottom-3 left-3 md:bottom-6 md:left-6 px-2 py-1 rounded-md border ${
+        isDarkMode ? 'bg-slate-800/40 border-slate-700/50 text-slate-500' : 'bg-white/40 border-white/60 text-slate-400'
+      } text-[10px] font-mono font-black pointer-events-none shadow-sm backdrop-blur-sm z-10`}>
+        #{formattedItem.id}
       </div>
     </motion.div>
   );

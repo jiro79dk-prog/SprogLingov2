@@ -86,26 +86,26 @@ export const LetterOrderGame = ({ content, onCorrect, onWrong }: GameProps) => {
             {content.question}
           </h3>
         </div>
-        <div className="min-h-[100px] flex items-center justify-center gap-4">
+        <div className="min-h-[80px] md:min-h-[100px] flex flex-wrap items-center justify-center gap-2 md:gap-4 px-2">
           <AnimatePresence>
             {currentGuess.split('').map((char, i) => (
               <motion.div
                 key={`${char}-${i}`}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="w-16 h-20 bg-white shadow-xl rounded-2xl flex items-center justify-center text-4xl font-black text-indigo-900 border-b-8 border-indigo-200"
+                className="w-10 h-14 md:w-16 md:h-20 bg-white shadow-xl rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-4xl font-black text-indigo-900 border-b-4 md:border-b-8 border-indigo-200"
               >
                 {char}
               </motion.div>
             ))}
             {Array.from({ length: content.answer.length - currentGuess.length }).map((_, i) => (
-              <div key={`empty-${i}`} className="w-16 h-20 bg-slate-100/50 rounded-2xl border-2 border-dashed border-slate-300" />
+              <div key={`empty-${i}`} className="w-10 h-14 md:w-16 md:h-20 bg-slate-100/50 rounded-xl md:rounded-2xl border-2 border-dashed border-slate-300" />
             ))}
           </AnimatePresence>
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-4 max-w-2xl mx-auto">
+      <div className="flex flex-wrap justify-center gap-2 md:gap-4 max-w-2xl mx-auto px-2">
         <AnimatePresence>
           {availableLetters.map((letter, i) => (
             <motion.button
@@ -117,7 +117,7 @@ export const LetterOrderGame = ({ content, onCorrect, onWrong }: GameProps) => {
               whileHover={{ scale: 1.1, y: -5 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => handleLetterClick(letter, i)}
-              className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black shadow-lg transition-colors bg-white hover:bg-indigo-50 border-2 border-transparent hover:border-indigo-200 text-indigo-600`}
+              className={`w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-3xl font-black shadow-lg transition-colors bg-white hover:bg-indigo-50 border-2 border-transparent hover:border-indigo-200 text-indigo-600`}
             >
               {letter}
             </motion.button>
